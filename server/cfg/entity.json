@@ -1,0 +1,28 @@
+{
+    "order":{
+        "label": "Order",
+        "fields": [
+            "created_at"
+        ]
+    },
+    "package": {
+        "label": "Package",
+        "fields": [
+            "created_at"
+        ]
+    },
+    "purchase":{
+        "label": "Purchase",
+        "fields": [
+            "created_at",
+            "count"
+        ]
+    },
+    "shipping":{
+        "label": "Purchase",
+        "fields": [
+            "created_at",
+            "value"
+        ]
+    }
+}

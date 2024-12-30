@@ -1,0 +1,20 @@
+[
+    {
+        "name": "Orders",
+        "type": "line",
+        "tooltip": true,
+        "legend": true,
+        "xaxis": [
+            {
+                "key": "name"
+            }
+        ],
+        "yaxis": [
+            {
+                "key": "name",
+                "stroke": "8884d8",
+                "fill": "#8884d8"
+            }
+        ]
+    }
+]

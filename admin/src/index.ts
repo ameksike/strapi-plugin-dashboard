@@ -1,0 +1,57 @@
+import { PLUGIN_ID } from './pluginId';
+import { Initializer } from './components/Initializer';
+import { DashboardIcon, HomeIcon } from './components/PluginIcon';
+
+export default {
+  register(app: any) {
+
+    app.addMenuLink({
+      to: `plugins/${PLUGIN_ID}`,
+      icon: HomeIcon,
+      intlLabel: {
+        id: `${PLUGIN_ID}.plugin.name`,
+        defaultMessage:'Ksike Virtual Home',
+      },
+      Component: async () => {
+        const { App } = await import('./pages/App');
+
+        return App;
+      },
+    });
+
+    app.addMenuLink({
+      to: `plugins/${PLUGIN_ID}/dashboard`,
+      icon: DashboardIcon,
+      intlLabel: {
+        id: `${PLUGIN_ID}.dashboard.label`,
+        defaultMessage: 'Ksike Virtual Dashboard',
+      },
+      Component: async () => {
+        const component = await import('./pages/Dashboard');
+        return component.default;
+      },
+      permissions: [],
+    });
+
+    app.registerPlugin({
+      id: PLUGIN_ID,
+      initializer: Initializer,
+      isReady: false,
+      name: PLUGIN_ID,
+    });
+  },
+
+  async registerTrads({ locales }: { locales: string[] }) {
+    return Promise.all(
+      locales.map(async (locale) => {
+        try {
+          const { default: data } = await import(`./translations/${locale}.json`);
+
+          return { data, locale };
+        } catch {
+          return { data: {}, locale };
+        }
+      })
+    );
+  },
+};
