@@ -1,20 +1,23 @@
 import { Core } from '@strapi/strapi';
+import { PLUGIN_ID } from '../../../admin/src/pluginId';
+
+const SERVICE_ID = 'chart';
 
 export default ({ strapi }: { strapi: Core.Strapi }) => ({
     async create(ctx) {
         const { data } = ctx.request.body;
-        const chart = await strapi.plugin('your-plugin-name').service('chart').create(data);
+        const chart = await strapi.plugin(PLUGIN_ID).service(SERVICE_ID).create(data);
         ctx.body = chart;
     },
 
     async findAll(ctx) {
-        const charts = await strapi.plugin('your-plugin-name').service('chart').findAll();
+        const charts = await strapi.plugin(PLUGIN_ID).service(SERVICE_ID).findAll();
         ctx.body = charts;
     },
 
     async findOne(ctx) {
         const { id } = ctx.params;
-        const chart = await strapi.plugin('your-plugin-name').service('chart').findOne(id);
+        const chart = await strapi.plugin(PLUGIN_ID).service(SERVICE_ID).findOne(id);
         if (chart) {
             ctx.body = chart;
         } else {
@@ -25,7 +28,7 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
     async update(ctx) {
         const { id } = ctx.params;
         const { data } = ctx.request.body;
-        const chart = await strapi.plugin('your-plugin-name').service('chart').update(id, data);
+        const chart = await strapi.plugin(PLUGIN_ID).service(SERVICE_ID).update(id, data);
         if (chart) {
             ctx.body = chart;
         } else {
@@ -35,7 +38,7 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
 
     async delete(ctx) {
         const { id } = ctx.params;
-        const deleted = await strapi.plugin('your-plugin-name').service('chart').delete(id);
+        const deleted = await strapi.plugin(PLUGIN_ID).service(SERVICE_ID).delete(id);
         if (deleted) {
             ctx.body = { message: 'Chart deleted successfully' };
         } else {
