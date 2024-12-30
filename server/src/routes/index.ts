@@ -1,7 +1,7 @@
 "use strict";
 
-import admin from "./admin";
-import contentApi from "./contentApi";
+import admin from "./index.admin";
+import contentApi from "./index.content-api";
 
 export default {
   "content-api": {
