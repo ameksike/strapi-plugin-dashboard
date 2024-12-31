@@ -2,7 +2,7 @@ import * as fs from 'fs/promises';
 import * as path from 'path';
 import { Entity, EntityList, FnFilter } from '../../../admin/src/models/Entity';
 
-const FILE = path.resolve(__dirname, '../../cfg/entity.json');
+const FILE = '../../cfg/entity.json';
 
 /**
  * Service class that manages CRUD operations on entities stored in a JSON file.

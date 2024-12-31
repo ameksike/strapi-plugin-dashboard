@@ -1,6 +1,6 @@
 import { request } from '@strapi/design-system';
-import { Chart } from 'src/models/Chart';
-import { PLUGIN_ID } from 'src/pluginId';
+import { Chart } from '../models/Chart';
+import { PLUGIN_ID } from '../pluginId';
 
 class ChartService {
     private baseUrl: string;

@@ -3,13 +3,19 @@ import * as path from 'path';
 import { Chart, FnFilter } from '../../../admin/src/models/Chart';
 
 // Define the path to the JSON file
-const FILE = path.resolve(__dirname, '../../cfg/charts.json');
+const FILE = '../cfg/charts.json';
 
 export class ChartService {
     private filePath: string;
 
     constructor(filePath: string = FILE) {
         this.filePath = filePath;
+    }
+
+    configure(filePath: string) {
+        this.filePath = filePath;
+        console.log("ChartService >>", this.filePath);
+        return this;
     }
 
     /**
@@ -19,10 +25,9 @@ export class ChartService {
     private async read(): Promise<Chart[]> {
         try {
             const data = await fs.readFile(this.filePath, 'utf8');
-            return JSON.parse(data) as Chart[];
-        } catch (error) {
-            console.error('Error reading file:', error);
-            throw new Error('Could not read charts file.');
+            return JSON.parse(data) as Chart[] || [];
+        } catch (_) {
+            return [];
         }
     }
 
@@ -33,9 +38,10 @@ export class ChartService {
      */
     private async write(charts: Chart[]): Promise<void> {
         try {
+            const dir = path.dirname(this.filePath);
+            await fs.mkdir(dir, { recursive: true });
             await fs.writeFile(this.filePath, JSON.stringify(charts, null, 2), 'utf8');
         } catch (error) {
-            console.error('Error writing file:', error);
             throw new Error('Could not write to charts file.');
         }
     }
@@ -45,10 +51,11 @@ export class ChartService {
      * @param {Chart} newChart - The chart to add.
      * @returns {Promise<void>}
      */
-    async create(newChart: Chart): Promise<void> {
+    async create(newChart: Chart): Promise<Chart> {
         const charts = await this.read();
         charts.push(newChart);
         await this.write(charts);
+        return newChart;
     }
 
     /**
@@ -56,10 +63,11 @@ export class ChartService {
      * @param {Chart[]} newCharts - The charts to add.
      * @returns {Promise<void>}
      */
-    async bulkCreate(newCharts: Chart[]): Promise<void> {
+    async bulkCreate(newCharts: Chart[]): Promise<Chart[]> {
         const charts = await this.read();
         charts.push(...newCharts);
         await this.write(charts);
+        return newCharts;
     }
 
     /**
@@ -85,10 +93,10 @@ export class ChartService {
     /**
      * Update charts based on a filter.
      * @param {FnFilter | null} [filterFn=null] - The filter function to find charts to update.
-     * @param {Partial<Chart>} updates - The updated properties.
+     * @param {Partial<Chart>} data - The updated properties.
      * @returns {Promise<void>}
      */
-    async update(filterFn: FnFilter | null = null, updates: Partial<Chart>): Promise<void> {
+    async update(filterFn: FnFilter | null = null, data: Partial<Chart>): Promise<Chart> {
         if (!filterFn) {
             throw new Error('A filter function must be provided for updates.');
         }
@@ -96,7 +104,7 @@ export class ChartService {
         let updated = false;
         for (let i = 0; i < charts.length; i++) {
             if (filterFn(charts[i])) {
-                charts[i] = { ...charts[i], ...updates };
+                charts[i] = { ...charts[i], ...data };
                 updated = true;
             }
         }
@@ -104,6 +112,7 @@ export class ChartService {
             throw new Error('No matching charts found for update.');
         }
         await this.write(charts);
+        return data as Chart;
     }
 
     /**
@@ -128,13 +137,16 @@ export class ChartService {
      * @param {FnFilter | null} [filterFn=null] - The filter function to identify charts to delete.
      * @returns {Promise<void>}
      */
-    async remove(filterFn: FnFilter | null = null): Promise<void> {
+    async remove(filterFn: FnFilter | string | number | null = null): Promise<Chart[]> {
         const charts = await this.read();
-        const filteredCharts = filterFn ? charts.filter(chart => !filterFn(chart)) : charts;
+        const filteredCharts = filterFn instanceof Function
+            ? charts.filter(chart => !filterFn(chart))
+            : (typeof filterFn === "string" || typeof filterFn === "number" ? [charts[filterFn]] : charts);
         if (filteredCharts.length === charts.length) {
             throw new Error('No matching charts found for removal.');
         }
         await this.write(filteredCharts);
+        return filteredCharts;
     }
 
     /**
