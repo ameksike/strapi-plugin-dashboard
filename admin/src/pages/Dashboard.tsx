@@ -5,17 +5,16 @@ import { EmptyStateLayout } from '@strapi/design-system';
 import ChartModal from '../components/ChartModal';
 import Illo from '../components/Lilo';
 import { Chart } from '../models/Chart';
-import chartService from "../../../server/src/utils/Chart";
+import srvChart from "../service/charsrv";
+import { ChartList } from '../components/ChartList';
 
 const Dashboard: React.FC = () => {
-
     function onConfirm(obj: Chart) {
-        console.log(obj);
-        chartService.create(obj);
+        srvChart.create(obj);
     }
 
     return (
-        <>
+        <Box>
             <Flex
                 gap={{
                     initial: 1,
@@ -38,6 +37,7 @@ const Dashboard: React.FC = () => {
                     </Box>
 
                 </Box>
+
                 <Box padding={8} background="neutral100">
                     <EmptyStateLayout
                         icon={<Illo />}
@@ -47,8 +47,11 @@ const Dashboard: React.FC = () => {
                         } />
                 </Box>
             </Flex>
-        </>
-    );
+            <Grid.Root>
+                <ChartList />
+            </Grid.Root>
+        </Box>
+    )
 };
 
 export default Dashboard;
