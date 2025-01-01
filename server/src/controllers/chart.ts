@@ -31,6 +31,16 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
         }
     },
 
+    async getData(ctx) {
+        const { id } = ctx.params;
+        const chart = await strapi.plugin(PLUGIN_ID).service(SERVICE_ID).getData(id);
+        if (chart) {
+            ctx.body = { data: chart };
+        } else {
+            ctx.notFound('Chart not found');
+        }
+    },
+
     async update(ctx) {
         const { id } = ctx.params;
         const data = ctx.request.body;

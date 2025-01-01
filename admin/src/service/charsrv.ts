@@ -10,7 +10,7 @@ export class ChartService {
 
     async getData<T>(id: string): Promise<T> {
         try {
-            const response = await fetch(`${this.baseUrl}/data/${id}`);
+            const response = await fetch(`${this.baseUrl}/${id}/data`);
             if (!response.ok) {
                 throw new Error(`Failed to create chart: ${response.status}`);
             }
