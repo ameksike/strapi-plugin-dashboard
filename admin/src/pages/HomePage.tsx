@@ -44,8 +44,8 @@ const HomePage: React.FC = () => {
 
       <Box>
         <Grid.Root padding={8} >
-          {charts.map((chart) => (
-            <Grid.Item key={chart.id} col={6} s={12} xs={12} margin={2}>
+          {charts.map((chart, index) => (
+            <Grid.Item key={chart.id + "-" + index} col={6} s={12} xs={12} margin={2}>
               <ChartView data={chart} onEdit={onEdit} />
             </Grid.Item>
           ))}
