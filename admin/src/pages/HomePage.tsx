@@ -1,13 +1,13 @@
-import { Main, Tooltip, Grid, EmptyStateLayout, Box, Loader, Typography } from '@strapi/design-system';
+import { Main, Grid, EmptyStateLayout, Box, Loader, Typography } from '@strapi/design-system';
 import styled from 'styled-components';
 import { useIntl } from 'react-intl';
 
-import { PLUGIN_ID } from '../pluginId';
 import { getTranslation } from '../utils/getTranslation';
 import { useCharts } from '../service/useChart';
 import { ChartView } from '../components/ChartView';
 import Illo from '../components/Lilo';
 import ChartModal from '../components/ChartModal';
+import { Chart } from '../models/Chart';
 
 const StyledBox = styled(Box)`
   border-radius: ${({ theme }) => theme.borderRadius};
@@ -18,6 +18,14 @@ const StyledBox = styled(Box)`
 const HomePage: React.FC = () => {
   const { formatMessage } = useIntl();
   const { isLoading, error, charts, create, update, remove } = useCharts();
+
+  function onConfirm(obj: Chart) {
+    create(obj);
+  }
+
+  function onEdit(obj: Chart) {
+    obj?.id && update(obj.id, obj);
+  }
 
   if (isLoading) {
     return <Loader>Loading content...</Loader>
@@ -38,7 +46,7 @@ const HomePage: React.FC = () => {
         <Grid.Root padding={8} >
           {charts.map((chart) => (
             <Grid.Item key={chart.id} col={6} s={12} xs={12} margin={2}>
-              <ChartView data={chart} />
+              <ChartView data={chart} onEdit={onEdit} />
             </Grid.Item>
           ))}
 
@@ -48,7 +56,7 @@ const HomePage: React.FC = () => {
                 icon={<Illo />}
                 content="You don't have any chart yet..."
                 action={
-                  <ChartModal />
+                  <ChartModal onConfirm={onConfirm} />
                 } />
             </Box>
           </Grid.Item>
