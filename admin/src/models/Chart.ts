@@ -9,7 +9,7 @@ export interface Chart {
     yaxis: { key: string; stroke: string; fill: string }[];
 }
 
-const protoChart = {
+export const protoChart = {
     "name": "order",
     "type": "line",
     "tooltip": true,
@@ -28,6 +28,8 @@ const protoChart = {
     ]
 }
 
-export const protoChartStr = JSON.stringify(protoChart, null, 2);
+export function toStr(data: Object): string {
+    return JSON.stringify(data, null, 2);
+}
 
 export type FnFilter = (chart: Chart) => boolean;

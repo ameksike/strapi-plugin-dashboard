@@ -1,8 +1,6 @@
-import { Box } from "@strapi/design-system";
+import { Box, Typography } from "@strapi/design-system";
 import { Chart } from "../models/Chart";
-import { Typography } from "@strapi/design-system";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
-
 
 const dataContent = [
     {
@@ -51,15 +49,15 @@ const dataContent = [
 
 interface ChartViewProps {
     data: Chart;
+    onEdit?: (value: Chart) => void;
+    onDel?: (value: Chart) => void;
 }
 
 export function ChartView({ data }: ChartViewProps) {
 
     return (
-        <Box padding={1} hasRadius>
-
+        <Box width="100%" background="neutral100" hasRadius>
             <Typography variant="beta">{data.label}</Typography>
-            
             <LineChart
                 width={500}
                 height={300}
