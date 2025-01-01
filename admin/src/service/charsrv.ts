@@ -8,6 +8,19 @@ export class ChartService {
         this.baseUrl = `/api/${pluginName}/charts`;
     }
 
+    async getData<T>(id: string): Promise<T> {
+        try {
+            const response = await fetch(`${this.baseUrl}/data/${id}`);
+            if (!response.ok) {
+                throw new Error(`Failed to create chart: ${response.status}`);
+            }
+            return response.json();
+        } catch (error) {
+            console.error('Error creating chart:', error);
+            throw error;
+        }
+    }
+
     async create(data: Omit<Chart, 'id'>): Promise<Chart> {
         try {
             const response = await fetch(this.baseUrl, {
