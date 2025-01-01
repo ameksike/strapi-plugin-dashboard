@@ -12,6 +12,23 @@ export default ({ strapi }: { strapi: any }) => ({
     return path.resolve(strapi.dirs.app?.root, 'dist/cfg/charts.json');
   },
 
+  sanitizeSQL(sql?: string): string | null {
+    // Trim leading and trailing whitespaces
+    const trimmedQuery = sql.trim().replace(/\n/g, ' ').replace(/ +/g, " ");
+    // Define forbidden keywords that indicate non-select operations
+    const forbiddenKeywords = /\b(UPDATE|DELETE|CREATE|TRUNCATE|DROP|INSERT|ALTER|EXEC|MERGE|CALL|GRANT|REVOKE|SET)\b/i;
+    if (forbiddenKeywords.test(trimmedQuery)) {
+      return null;
+    }
+    // Check for potentially dangerous characters or sequences outside valid SELECT syntax
+    const dangerousPatterns = /(--|\/\*|\*\/)/g;
+    if (dangerousPatterns.test(trimmedQuery)) {
+      return null;
+    }
+    // Remove trailing semicolon for safety
+    return trimmedQuery.replace(/;$/, '').trim();
+  },
+
   getSrv() {
     return srvChart.configure(this.getPath());
   },
@@ -37,52 +54,16 @@ export default ({ strapi }: { strapi: any }) => ({
   },
 
   async getData(id: string): Promise<any[]> {
-    const chart =  await this.getSrv().findOne(getFilter(id));
-    console.log(">>>>>>>>>>> getData: ", id, chart);
-    return [
-      {
-        name: 'Page A',
-        uv: 4000,
-        pv: 2400,
-        amt: 2400,
-      },
-      {
-        name: 'Page B',
-        uv: 3000,
-        pv: 1398,
-        amt: 2210,
-      },
-      {
-        name: 'Page C',
-        uv: 2000,
-        pv: 9800,
-        amt: 2290,
-      },
-      {
-        name: 'Page D',
-        uv: 2780,
-        pv: 3908,
-        amt: 2000,
-      },
-      {
-        name: 'Page E',
-        uv: 1890,
-        pv: 4800,
-        amt: 2181,
-      },
-      {
-        name: 'Page F',
-        uv: 2390,
-        pv: 3800,
-        amt: 2500,
-      },
-      {
-        name: 'Page G',
-        uv: 3490,
-        pv: 4300,
-        amt: 2100,
-      },
-    ];
+    const chart = await this.getSrv().findOne(getFilter(id));
+    const query = this.sanitizeSQL(chart.query);
+    let res = null;
+    if (query) {
+      res = await strapi.db.connection.raw(query);
+      if (res?.rows?.length) {
+        return res.rows;
+      }
+    }
+    return [];
   }
 
 });
