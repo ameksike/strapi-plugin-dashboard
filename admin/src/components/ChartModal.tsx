@@ -5,17 +5,18 @@ import { Button } from "@strapi/design-system";
 import { Modal } from "@strapi/design-system";
 import { Plus } from "@strapi/icons";
 import { FormEvent, useState } from "react";
-import { Chart, protoChartStr } from "../models/Chart";
+import { Chart, protoChart, toStr } from "../models/Chart";
 
 interface CharModalProps {
-    onConfirm: (value: Chart) => void;
+    onConfirm?: (value: Chart) => void;
+    data?: Chart
 }
 
 type GetChart = (param: string) => Chart | null;
 
-function ChartModal({ onConfirm }: CharModalProps) {
-    const [name, setName] = useState("");
-    const [config, setConfig] = useState(protoChartStr);
+function ChartModal({ onConfirm, data }: CharModalProps) {
+    const [name, setName] = useState(data?.label || "");
+    const [config, setConfig] = useState(toStr(data || protoChart));
     const [error, setError] = useState("");
     const [open, setOpen] = useState(false);
 
@@ -45,7 +46,7 @@ function ChartModal({ onConfirm }: CharModalProps) {
     const handlerClose = () => {
         setOpen(false);
         setName("");
-        setConfig(protoChartStr);
+        setConfig(toStr(data || protoChart));
     };
 
     const handleConfirm = (event: FormEvent<HTMLFormElement>) => {
@@ -54,7 +55,7 @@ function ChartModal({ onConfirm }: CharModalProps) {
         let proto = getConfig(config);
         if (proto && !error) {
             proto.label = proto.label || name;
-            onConfirm(proto);
+            onConfirm instanceof Function && onConfirm(proto);
             handlerClose();
         } else {
             console.log(error)
