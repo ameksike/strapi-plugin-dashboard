@@ -7,6 +7,7 @@ export interface Chart {
     legend?: boolean;
     xaxis: { key: string }[];
     yaxis: { key: string; stroke: string; fill: string }[];
+    query?: string;
 }
 
 export const protoChart = {
