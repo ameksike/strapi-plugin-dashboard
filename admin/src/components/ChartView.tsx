@@ -66,9 +66,9 @@ export function ChartView({ data, onEdit, onDel }: ChartViewProps) {
                         <YAxis />
                         <Tooltip />
                         <Legend />
-                        {data.yaxis.map(line => (<Line type="monotone" key={line.key} dataKey={line.key} stroke={line.stroke} activeDot={{ r: 8 }} />))}
-                        <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} />
-                        <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+                        {data.yaxis.map((item, index) => (
+                            <Line type="monotone" dataKey={item.key} stroke={item.stroke} activeDot={item.active} key={index} />
+                        ))}
                     </LineChart>
                 </Box>
             )}

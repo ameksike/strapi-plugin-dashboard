@@ -1,8 +1,4 @@
-import { Field } from "@strapi/design-system";
-import { TextInput } from "@strapi/design-system";
-import { JSONInput } from "@strapi/design-system";
-import { Button } from "@strapi/design-system";
-import { Modal } from "@strapi/design-system";
+import { TextInput, Textarea, Button, Modal, JSONInput, Field } from "@strapi/design-system";
 import { Plus } from "@strapi/icons";
 import { FormEvent, useState } from "react";
 import { Chart, protoChart, toStr } from "../models/Chart";
@@ -16,6 +12,7 @@ type GetChart = (param: string) => Chart | null;
 
 function ChartModal({ onConfirm, data }: CharModalProps) {
     const [name, setName] = useState(data?.label || "");
+    const [query, setQuery] = useState(data?.query || "");
     const [config, setConfig] = useState(toStr(data || protoChart));
     const [error, setError] = useState("");
     const [open, setOpen] = useState(false);
@@ -46,6 +43,7 @@ function ChartModal({ onConfirm, data }: CharModalProps) {
     const handlerClose = () => {
         setOpen(false);
         setName("");
+        setQuery("");
         setConfig(toStr(data || protoChart));
     };
 
@@ -55,6 +53,7 @@ function ChartModal({ onConfirm, data }: CharModalProps) {
         let proto = getConfig(config);
         if (proto && !error) {
             proto.label = proto.label || name;
+            proto.query = proto.query || query;
             onConfirm instanceof Function && onConfirm(proto);
             handlerClose();
         } else {
@@ -72,32 +71,42 @@ function ChartModal({ onConfirm, data }: CharModalProps) {
                     <Modal.Title>Add a new Chart</Modal.Title>
                 </Modal.Header>
                 <form onSubmit={handleConfirm} >
+                    <Modal.Body style={{ maxHeight: '70vh', overflowY: 'auto' }}>
+                    
+                            <Field.Root name="name" marginBottom={4} required>
+                                <Field.Label>Name</Field.Label>
+                                <TextInput
+                                    placeholder="How do you want to name your chart?"
+                                    label="Name"
+                                    name="text"
+                                    hint="Max 40 characters"
+                                    error={handleError()}
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
+                                    value={name}
+                                />
+                            </Field.Root>
 
-                    <Modal.Body>
-                        <Field.Root name="name" marginBottom={4} required>
-                            <Field.Label>Name</Field.Label>
-                            <TextInput
-                                placeholder="How do you want to name your chart?"
-                                label="Name"
-                                name="text"
-                                hint="Max 40 characters"
-                                error={handleError()}
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
-                                value={name}
-                            />
-                        </Field.Root>
+                            <Field.Root id="config" marginBottom={4} required>
+                                <Field.Label>Chart Config</Field.Label>
+                                <JSONInput
+                                    value={config}
+                                    aria-label="JSON"
+                                    error={error}
+                                    onChange={(value: string) => setConfig(value)}
+                                />
+                                <Field.Error />
+                                <Field.Hint />
+                            </Field.Root>
 
-                        <Field.Root id="config" required>
-                            <Field.Label>Chart Config</Field.Label>
-                            <JSONInput
-                                value={config}
-                                aria-label="JSON"
-                                error={error}
-                                onChange={(value: string) => setConfig(value)}
-                            />
-                            <Field.Error />
-                            <Field.Hint />
-                        </Field.Root>
+                            <Field.Root name="query" marginBottom={4} required>
+                                <Field.Label>Query</Field.Label>
+                                <Textarea
+                                    placeholder="How do you want to render in your chart?"
+                                    name="text"
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuery(e.target.value)}
+                                    value={query}
+                                />
+                            </Field.Root>
                     </Modal.Body>
 
                     <Modal.Footer>

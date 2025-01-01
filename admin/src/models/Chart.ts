@@ -6,7 +6,7 @@ export interface Chart {
     tooltip?: boolean;
     legend?: boolean;
     xaxis: { key: string }[];
-    yaxis: { key: string; stroke: string; fill: string }[];
+    yaxis: { key: string; stroke: string; fill: string; active: any }[];
     query?: string;
 }
 
@@ -23,8 +23,9 @@ export const protoChart = {
     "yaxis": [
         {
             "key": "name",
-            "stroke": "8884d8",
-            "fill": "#8884d8"
+            "stroke": "#8884d8",
+            "fill": "8884d8",
+            "active": { "r": 8 }
         }
     ]
 }
