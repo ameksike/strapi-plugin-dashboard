@@ -12,11 +12,15 @@ import { Chart } from '../models/Chart';
 import { useCharts } from '../service/useChart';
 import { PLUGIN_ID } from '../pluginId';
 import { getTranslation } from '../utils/getTranslation';
+import { Header } from '../components/Header';
 
 const StyledBox = styled(Box)`
   border-radius: ${({ theme }) => theme.borderRadius};
   background-color: ${({ theme }) => theme.colors.neutral100};
-  height: 80px
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const HomePage: React.FC = () => {
@@ -56,18 +60,7 @@ const HomePage: React.FC = () => {
     <Main>
       <ChartModal onConfirm={onConfirm} ctrl={ctlChartModal} />
 
-      <LinkButton as={NavLink} to={`/admin/plugins/ksvirt/1735773224413`}>
-        Mi Enlace
-      </LinkButton>
-
-      <Box>
-        <StyledBox padding={3} >
-          <Typography variant="beta">{formatMessage({ id: getTranslation('home.title') })}</Typography>
-        </StyledBox >
-        <Box>
-          <Typography textColor="neutral600">{formatMessage({ id: getTranslation('home.subtitle') })}</Typography>
-        </Box>
-      </Box>
+      <Header />
 
       <Box>
         <Grid.Root padding={8} >
@@ -87,8 +80,11 @@ const HomePage: React.FC = () => {
             </Grid.Item>
           ))}
 
-          <Grid.Item col={4} md={6} s={12} margin={2}>
-            <Box width="100%" background="neutral100">
+          <Grid.Item col={4} md={6} s={12} margin={2} >
+            <Box
+              width="100%"
+              background="neutral100"
+            >
               <EmptyStateLayout
                 icon={<Illo />}
                 content={(

@@ -1,20 +1,15 @@
 import React, { useCallback } from 'react';
-import styled from 'styled-components';
 import { useIntl } from 'react-intl';
-import { useParams } from 'react-router-dom';
-import { Box, Typography, Main, Loader, Alert } from '@strapi/design-system';
+import { NavLink, useParams } from 'react-router-dom';
+import { Box, Typography, Main, Loader, Alert, LinkButton } from '@strapi/design-system';
+import { PLUGIN_ID } from '../pluginId';
 import { Chart } from '../models/Chart';
 import { ChartView } from '../components/ChartView';
 import { useCharts } from '../service/useChart';
 import { getTranslation } from '../utils/getTranslation';
 import { ChartModalCtrl, ChartModal } from '../components/ChartModal';
-import srvChart from "../service/charsrv";
-
-const StyledBox = styled(Box)`
-  border-radius: ${({ theme }) => theme.borderRadius};
-  background-color: ${({ theme }) => theme.colors.neutral100};
-  height: 80px
-`;
+import { Header } from '../components/Header';
+import { ArrowLeft } from '@strapi/icons';
 
 const ViewPage: React.FC = () => {
     const { id } = useParams();
@@ -47,22 +42,23 @@ const ViewPage: React.FC = () => {
 
     return (
         <Main>
-            <Box>
-                <StyledBox padding={3} >
-                    <Typography variant="beta">{formatMessage({ id: getTranslation('home.title') })}</Typography>
-                </StyledBox >
-                <Box>
-                    <Typography textColor="neutral600">{formatMessage({ id: getTranslation('home.subtitle') })}</Typography>
-                </Box>
-            </Box>
+            <Header subtitle='page.show.subtitle' />
             <Box margin={5}>
                 <ChartModal onConfirm={onConfirm} ctrl={ctlChartModal} />
+
                 {error && (
                     <Alert width="100%" closeLabel="Close" title="Title" variant="danger">
                         {formatMessage({ id: getTranslation('error.retrieve') })}
                     </Alert>
                 )}
-                {chart && <ChartView data={chart} onEdit={onEdit} onDel={onDel} />}
+
+                {chart && <ChartView data={chart} onEdit={onEdit} onDel={onDel} size={({ height: 600, width: 1800 })} />}
+
+                <Box marginTop={4}>
+                    <LinkButton as={NavLink} variant="ghost" to={`/plugins/${PLUGIN_ID}`}>
+                        <ArrowLeft /> <Typography variant="omega"> {formatMessage({ id: getTranslation('page.btn.back') })}</Typography>
+                    </LinkButton>
+                </Box>
             </Box>
         </Main>
     )
