@@ -6,8 +6,11 @@ import { getTranslation } from '../utils/getTranslation';
 import { useCharts } from '../service/useChart';
 import { ChartView } from '../components/ChartView';
 import Illo from '../components/Lilo';
-import ChartModal from '../components/ChartModal';
+import ChartModal, { ChartModalCtrl } from '../components/ChartModal';
 import { Chart } from '../models/Chart';
+import { useCallback, useState } from 'react';
+import { Button } from '@strapi/design-system';
+import { Plus } from '@strapi/icons';
 
 const StyledBox = styled(Box)`
   border-radius: ${({ theme }) => theme.borderRadius};
@@ -18,14 +21,26 @@ const StyledBox = styled(Box)`
 const HomePage: React.FC = () => {
   const { formatMessage } = useIntl();
   const { isLoading, error, charts, create, update, remove } = useCharts();
+  const ctlChartModal = ChartModalCtrl();
 
   function onConfirm(obj: Chart) {
-    create(obj);
+    if (obj?.id) {
+      update(obj?.id!, obj);
+      console.log("onConfirm:update", obj)
+    } else {
+      create(obj);
+      console.log("onConfirm:create", obj)
+    }
   }
 
-  function onEdit(obj: Chart) {
-    obj?.id && update(obj.id, obj);
-  }
+  const onEdit = async (obj: Chart) => {
+    console.log("onEdit", obj);
+    ctlChartModal.open(obj);
+  };
+
+  const onDel = useCallback(async (obj: Chart) => {
+    obj?.id && remove(obj.id);
+  }, []);
 
   if (isLoading) {
     return <Loader>Loading content...</Loader>
@@ -33,6 +48,8 @@ const HomePage: React.FC = () => {
 
   return (
     <Main>
+      <ChartModal onConfirm={onConfirm} ctrl={ctlChartModal} />
+
       <Box>
         <StyledBox padding={3} >
           <Typography variant="beta">Welcome to {formatMessage({ id: getTranslation('plugin.name') })}</Typography>
@@ -46,7 +63,7 @@ const HomePage: React.FC = () => {
         <Grid.Root padding={8} >
           {charts.map((chart, index) => (
             <Grid.Item key={chart.id + "-" + index} col={6} s={12} xs={12} margin={2}>
-              <ChartView data={chart} onEdit={onEdit} />
+              <ChartView data={chart} onEdit={onEdit} onDel={onDel} />
             </Grid.Item>
           ))}
 
@@ -54,10 +71,10 @@ const HomePage: React.FC = () => {
             <Box width="100%" background="neutral100">
               <EmptyStateLayout
                 icon={<Illo />}
-                content="You don't have any chart yet..."
-                action={
-                  <ChartModal onConfirm={onConfirm} />
-                } />
+                content={(
+                  <Button variant="tertiary" startIcon={<Plus />} onClick={() => ctlChartModal.open()}>Create a new Chart</Button>
+                )}
+              />
             </Box>
           </Grid.Item>
         </Grid.Root>
