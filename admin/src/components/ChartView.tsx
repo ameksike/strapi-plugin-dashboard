@@ -7,6 +7,7 @@ import srvChart from "../service/charsrv";
 import { useCallback } from "react";
 import { getTranslation } from "../utils/getTranslation";
 import { useIntl } from "react-intl";
+import { useSize } from "../service/useSize";
 
 interface Item {
     name: string;
@@ -18,8 +19,8 @@ interface Item {
 interface ChartViewProps {
     data: Chart;
     size?: {
-        width: number;
-        height: number;
+        width?: number;
+        height?: number;
     };
     onEdit?: (value: Chart) => void;
     onDel?: (value: Chart) => void;
@@ -39,10 +40,11 @@ function ChartItem({ item, index }: { item: Axis, index: number }) {
     }
 }
 
-export function ChartView({ data, onEdit, onDel, onView, size = { width: 600, height: 300 } }: ChartViewProps) {
+export function ChartView({ data, onEdit, onDel, onView, size }: ChartViewProps) {
     const { formatMessage } = useIntl();
     const fetchChartData: () => Promise<{ data: Array<Item> }> | null | undefined = useCallback(() => !data?.id ? null : srvChart.getData(data.id), []);
     const { data: result, error, isLoading } = useFetchSrv<{ data: Array<Item> }>(fetchChartData);
+    const wSize = useSize();
 
     if (isLoading) {
         return <Loader>{formatMessage({ id: getTranslation('msg.loading') })}</Loader>
@@ -88,8 +90,8 @@ export function ChartView({ data, onEdit, onDel, onView, size = { width: 600, he
                 >
                     <ComposedChart
                         data={result?.data}
-                        width={size.width}
-                        height={size.height}
+                        width={size?.width ?? wSize.percernt(90, "width")}
+                        height={size?.height ?? wSize.percernt(70, "height")}
                         margin={{
                             top: 5,
                             right: 10,

@@ -76,7 +76,7 @@ const HomePage: React.FC = () => {
 
           {charts.map((chart, index) => (
             <Grid.Item key={chart.id + "-" + index} col={6} s={12} xs={12} margin={2}>
-              <ChartView data={chart} onEdit={onEdit} onDel={onDel} onView={onShow} />
+              <ChartView data={chart} onEdit={onEdit} onDel={onDel} onView={onShow} size={({ height: 300, width: 600 })}/>
             </Grid.Item>
           ))}
 

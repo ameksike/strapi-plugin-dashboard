@@ -52,7 +52,7 @@ const ViewPage: React.FC = () => {
                     </Alert>
                 )}
 
-                {chart && <ChartView data={chart} onEdit={onEdit} onDel={onDel} size={({ height: 600, width: 1800 })} />}
+                {chart && <ChartView data={chart} onEdit={onEdit} onDel={onDel} />}
 
                 <Box marginTop={4}>
                     <LinkButton as={NavLink} variant="ghost" to={`/plugins/${PLUGIN_ID}`}>
