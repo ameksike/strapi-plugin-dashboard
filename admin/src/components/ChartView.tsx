@@ -30,9 +30,9 @@ export function ChartView({ data, onEdit, onDel }: ChartViewProps) {
                 <Flex justifyContent="space-between" alignItems="center">
                     <Typography>{data.label}</Typography>
                     <Flex>
-                        <Button onClick={() => onEdit instanceof Function && onEdit(data)} label="Edit" ><Pencil /></Button>
+                        <Button variant="tertiary"  onClick={() => onEdit instanceof Function && onEdit(data)} label="Edit" ><Pencil /></Button>
                         <Box paddingLeft={2}>
-                            <Button onClick={onDel instanceof Function && onDel(data)} label="Delete"  > <Trash /></Button>
+                            <Button variant="tertiary"  onClick={() => onDel instanceof Function && onDel(data)} label="Delete"  > <Trash /></Button>
                         </Box>
                     </Flex>
                 </Flex>
