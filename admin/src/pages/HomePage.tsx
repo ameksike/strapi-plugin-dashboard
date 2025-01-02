@@ -1,20 +1,17 @@
-import { Main, Grid, EmptyStateLayout, Box, Loader, Typography, Alert } from '@strapi/design-system';
+import { Main, Grid, EmptyStateLayout, Box, Loader, Typography, Alert, Button, LinkButton } from '@strapi/design-system';
+import { Plus } from '@strapi/icons';
+import { NavLink, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useIntl } from 'react-intl';
+import { useCallback } from 'react';
 
-import { getTranslation } from '../utils/getTranslation';
-import { useCharts } from '../service/useChart';
-import { ChartView } from '../components/ChartView';
 import Illo from '../components/Lilo';
+import { ChartView } from '../components/ChartView';
 import ChartModal, { ChartModalCtrl } from '../components/ChartModal';
 import { Chart } from '../models/Chart';
-import { useCallback, useState } from 'react';
-import { Button } from '@strapi/design-system';
-import { Plus } from '@strapi/icons';
+import { useCharts } from '../service/useChart';
 import { PLUGIN_ID } from '../pluginId';
-
-import { LinkButton } from '@strapi/design-system';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { getTranslation } from '../utils/getTranslation';
 
 const StyledBox = styled(Box)`
   border-radius: ${({ theme }) => theme.borderRadius};
