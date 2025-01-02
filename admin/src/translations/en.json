@@ -1,1 +1,22 @@
-{}
+{
+    "ksvirt.plugin.name": "KS Virt Dashboard",
+    "ksvirt.home.title": "Welcome to Ksike Virtual Dashboard",
+    "ksvirt.home.subtitle": "This is a custom dashboard with a static value",
+    "ksvirt.home.btn.create": "Create a new Chart",
+    "ksvirt.page.btn.back": "Back to Dashboard",
+    "ksvirt.page.show.title": "Show Page",
+    "ksvirt.page.show.subtitle": "Get more details about this chart",
+    "ksvirt.page.show.btn.apply": "Applay",
+    "ksvirt.error.retrieve": "There is no data to retrieve.",
+    "ksvirt.msg.loading": "Loading content...",
+    "ksvirt.modal.add": "Add a new Chart",
+    "ksvirt.modal.btn.confirm": "Confirm",
+    "ksvirt.modal.btn.create": "Create a new Chart",
+    "ksvirt.modal.btn.cancel": "Cancel",
+    "ksvirt.modal.label.title": "Label",
+    "ksvirt.modal.label.placeholder": "How do you want to name your chart?",
+    "ksvirt.modal.config.title": "Chart Config",
+    "ksvirt.modal.config.error": "The value must be a valid JSON object.",
+    "ksvirt.modal.query.title": "Query",
+    "ksvirt.modal.query.placeholder": "What do you want to render in your chart?"
+}

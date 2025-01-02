@@ -44,4 +44,13 @@ export default [
             auth: false,
         },
     },
+    {
+        method: 'GET',
+        path: '/charts/:id/data',
+        handler: 'chart.getData',
+        config: {
+            policies: [],
+            auth: false,
+        },
+    }
 ];
