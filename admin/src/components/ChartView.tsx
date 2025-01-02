@@ -1,6 +1,7 @@
 import { Box, Typography, Flex, Button, Loader, Alert } from "@strapi/design-system";
-import { Chart, Axis } from "../models/Chart";
-import { XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ComposedChart, Area, Bar, Line } from 'recharts';
+
+import { Chart, Filters } from "../models/Chart";
+import { XAxis, YAxis, CartesianGrid, Tooltip, Legend, ComposedChart } from 'recharts';
 import { Pencil, Trash, Eye } from "@strapi/icons";
 import { useFetchSrv } from "../service/useFetch";
 import srvChart from "../service/charsrv";
@@ -8,6 +9,11 @@ import { useCallback } from "react";
 import { getTranslation } from "../utils/getTranslation";
 import { useIntl } from "react-intl";
 import { useSize } from "../service/useSize";
+import { FilterPanel } from "./FilterPanel";
+import { ChartItem } from "./ChartItem";
+
+import { useAuth } from '@strapi/strapi/admin';
+import { PLUGIN_ID } from "../pluginId";
 
 interface Item {
     name: string;
@@ -27,24 +33,20 @@ interface ChartViewProps {
     onView?: (value: Chart) => void;
 }
 
-function ChartItem({ item, index }: { item: Axis, index: number }) {
-    switch (item?.type?.toLowerCase()) {
-        case "bar":
-            return <Bar type="monotone" dataKey={item.key} stroke={item.stroke} fill={item.fill} key={index} barSize={item.barSize ?? 10} />
-
-        case "area":
-            return <Area type="monotone" dataKey={item.key} stroke={item.stroke} fill={item.fill} activeDot={item.active} key={index} />
-
-        default:
-            return <Line type="monotone" dataKey={item.key} stroke={item.stroke} activeDot={item.active} key={index} />
-    }
-}
+type FnFetch = (params?: Filters) => Promise<{ data: Array<Item> }> | null | undefined;
 
 export function ChartView({ data, onEdit, onDel, onView, size }: ChartViewProps) {
     const { formatMessage } = useIntl();
-    const fetchChartData: () => Promise<{ data: Array<Item> }> | null | undefined = useCallback(() => !data?.id ? null : srvChart.getData(data.id), []);
-    const { data: result, error, isLoading } = useFetchSrv<{ data: Array<Item> }>(fetchChartData);
+    const fetchChartData: FnFetch = useCallback(() => !data?.id ? null : srvChart.getData(data.id), []);
+    const { data: result, error, isLoading, load } = useFetchSrv<{ data: Array<Item> }, Filters>(fetchChartData);
     const wSize = useSize();
+
+    //const auth = useAuth(PLUGIN_ID, (state) => state.permissions);
+
+    function onApply(state: Filters) {
+        console.log(">>>>>>>>>>>>>>>>> ", state)
+        // load(state);
+    }
 
     if (isLoading) {
         return <Loader>{formatMessage({ id: getTranslation('msg.loading') })}</Loader>
@@ -112,6 +114,8 @@ export function ChartView({ data, onEdit, onDel, onView, size }: ChartViewProps)
                     </ComposedChart>
                 </Box>
             )}
+
+            <FilterPanel data={data} onApply={onApply} />
         </Box>
     )
 }
