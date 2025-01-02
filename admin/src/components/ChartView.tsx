@@ -6,6 +6,7 @@ import { useFetchSrv } from "../service/useFetch";
 import srvChart from "../service/charsrv";
 import { useCallback } from "react";
 import { getTranslation } from "../utils/getTranslation";
+import { useIntl } from "react-intl";
 
 interface Item {
     name: string;
@@ -22,9 +23,13 @@ interface ChartViewProps {
 }
 
 export function ChartView({ data, onEdit, onDel, onView }: ChartViewProps) {
+    const { formatMessage } = useIntl();
     const fetchChartData: () => Promise<{ data: Array<Item> }> | null | undefined = useCallback(() => !data?.id ? null : srvChart.getData(data.id), []);
+    const { data: result, error, isLoading } = useFetchSrv<{ data: Array<Item> }>(fetchChartData);
 
-    const { data: result, error, isLoading } = useFetchSrv<{ data: Array<Item> }>(fetchChartData)
+    if (isLoading) {
+        return <Loader>{formatMessage({ id: getTranslation('msg.loading')})}</Loader>
+    }
 
     return (
         <Box width="100%" minWidth="600px" background="neutral100" borderColor="neutral150" borderWidth="2px" hasRadius>
@@ -32,9 +37,9 @@ export function ChartView({ data, onEdit, onDel, onView }: ChartViewProps) {
                 <Flex justifyContent="space-between" alignItems="center">
                     <Typography>{data.label}</Typography>
                     <Flex>
-                        <Box paddingLeft={2}>
+                        {onView && <Box paddingLeft={2}>
                             <Button variant="tertiary" onClick={() => onView instanceof Function && onView(data)} label="View"  > <Eye /></Button>
-                        </Box>
+                        </Box>}
                         <Box paddingLeft={2}>
                             <Button variant="tertiary" onClick={() => onEdit instanceof Function && onEdit(data)} label="Edit" ><Pencil /></Button>
                         </Box>
@@ -47,7 +52,7 @@ export function ChartView({ data, onEdit, onDel, onView }: ChartViewProps) {
 
             {error && (
                 <Alert width="100%" closeLabel="Close" title="Title" variant="danger">
-                    {getTranslation('error.retrieve')}
+                    {formatMessage({ id: getTranslation('error.retrieve')})}
                 </Alert>
             )}
 

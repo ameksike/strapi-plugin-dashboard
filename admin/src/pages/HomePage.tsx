@@ -26,7 +26,7 @@ const HomePage: React.FC = () => {
   const { isLoading, error, charts, create, update, remove } = useCharts({ all: true });
 
   const onShow = (obj: Chart) => {
-    navigate(`/admin/plugins/${PLUGIN_ID}/${obj.id}`);
+    navigate(`/plugins/${PLUGIN_ID}/${obj.id}`);
   };
 
   function onConfirm(obj: Chart) {
@@ -73,7 +73,7 @@ const HomePage: React.FC = () => {
         <Grid.Root padding={8} >
           {error && (
             <Alert width="100%" closeLabel="Close" title="Title" variant="danger">
-              {getTranslation('error.retrieve')}
+              {formatMessage({ id: getTranslation('error.retrieve') })}
             </Alert>
           )}
 
