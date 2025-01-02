@@ -59,13 +59,13 @@ export default ({ strapi }: { strapi: any }) => ({
     return await this.getSrv().remove((item) => item.id === id);
   },
 
-  async getData(id: string): Promise<any[]> {
+  async getData(id: string, params?: { [key: string]: any }): Promise<any[]> {
     const chart = await this.getSrv().findOne(getFilter(id));
     const query = chart?.query && this.sanitizeSQL(chart?.query);
     const defaults = this.getSrv().getDefaults(chart.vars);
     let res = null;
     if (query) {
-      res = await strapi.db.connection.raw(query, { ...defaults });
+      res = await strapi.db.connection.raw(query, { ...defaults, ...params });
       if (res?.rows?.length) {
         return res.rows;
       }

@@ -162,8 +162,8 @@ export class ChartService {
         await this.write(charts);
     }
 
-    getDefaults(data: Vars) {
-        return Object.keys(data).reduce((acc, key) => (acc[key] = data[key]?.defaults) && acc, {});
+    getDefaults(data: Vars[]) {
+        return data.reduce((acc, item) => (acc[item.key] = item.defaults) && acc, {});
     }
 }
 

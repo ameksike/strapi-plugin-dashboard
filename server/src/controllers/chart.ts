@@ -33,7 +33,7 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
 
     async getData(ctx) {
         const { id } = ctx.params;
-        const chart = await strapi.plugin(PLUGIN_ID).service(SERVICE_ID).getData(id);
+        const chart = await strapi.plugin(PLUGIN_ID).service(SERVICE_ID).getData(id, ctx.query);
         if (chart) {
             ctx.body = { data: chart };
         } else {
