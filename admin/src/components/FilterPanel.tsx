@@ -1,9 +1,11 @@
-import { SingleSelectOption } from "@strapi/design-system";
-import { SingleSelect } from "@strapi/design-system";
-import { Box } from "@strapi/design-system";
+import { Flex, Box } from "@strapi/design-system";
+import { Check } from '@strapi/icons';
 import { Chart, Filters, Vars } from "../models/Chart";
 import { useReducer } from "react";
 import { Button } from "@strapi/design-system";
+import { FilterItem } from "./FilterItem";
+import { useIntl } from "react-intl";
+import { getTranslation } from "../utils/getTranslation";
 
 interface FilterPanelProp {
     data: Chart;
@@ -12,23 +14,24 @@ interface FilterPanelProp {
 }
 
 export function FilterPanel({ data, ctrl, onApply }: FilterPanelProp) {
-    const { dispatch, state } = ctrl || FilterPanelCtrl(data);
+    const control = ctrl || FilterPanelCtrl(data);
+    const { formatMessage } = useIntl();
 
     return (
-        <Box >
-            {data.vars?.map(item => {
-                return (<SingleSelect
-                    key={item.key}
-                    onClear={() => dispatch({ [item.key]: null })}
-                    value={state[item.key]}
-                    onChange={(value: string) => dispatch({ [item.key]: value })}
-                >
-                    {(item.value as Array<{ key: string; value: string }>).map(i => (<SingleSelectOption key={i.key} value={i.key}>{i.value}</SingleSelectOption>))}
-                    <SingleSelectOption value="strawberry">Strawberry</SingleSelectOption>
-                </SingleSelect>)
-            })}
-            <Button onClick={() => onApply instanceof Function && onApply(state)}> Apply </Button>
-        </Box>
+        <Flex
+            padding={4}
+            direction={{
+                initial: 'column',
+                medium: 'row'
+            }}
+            style={{
+                alignItems: "center",
+                justifyContent: "flex-end"
+            }}
+        >
+            {data.vars?.map(item => FilterItem({ item, control, style: { marginRight: "4px" } }))}
+            <Box paddingLeft={2}><Button variant="tertiary" onClick={() => onApply instanceof Function && onApply(control.state)} label={formatMessage({ id: getTranslation('page.show.btn.apply') })}> <Check /> </Button></Box>
+        </Flex >
     );
 }
 
