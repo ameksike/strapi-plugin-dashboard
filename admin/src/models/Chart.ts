@@ -62,15 +62,45 @@ export const protoChart = {
             "fill": "#82ca9d"
         }
     ],
-    "label": "Order History 2024",
+    "label": "Order History ",
     "query": "WITH monthly_totals AS (\n    SELECT\n        DATE_TRUNC('month', o.published_at) AS month,\n        COALESCE(SUM(o.charged),0) AS total_charged,\n        COALESCE(SUM(o.cost_real),0) AS total_cost_real,\n        COALESCE(SUM(o.profits),0) AS total_profits\n    FROM\n        public.orders AS o\n    INNER JOIN\n        public.orders_user_lnk AS ou\n        ON ou.order_id = o.id\n    INNER JOIN\n        public.up_users AS u\n        ON u.id = ou.user_id\n    WHERE\n        o.published_at IS NOT NULL\n        AND EXTRACT(YEAR FROM o.published_at) = :year\n    GROUP BY\n        DATE_TRUNC('month', o.published_at)\n)\nSELECT\n    TO_CHAR(month, 'YYYY-MM') AS month,\n    total_charged,\n    total_cost_real,\n    total_profits\nFROM\n    monthly_totals\nORDER BY\n    month;",
-    "vars": {
-        "year": {
+    "vars": [
+        {
+            "key": "year",
+            "defaults": "2024",
             "component": "select",
-            "value": ["2023", "2024", "2025", "2026", "2027", "2028", "2029"],
-            "default": "2024"
+            "value": [
+                {
+                    "key": "2023",
+                    "value": "2023"
+                },
+                {
+                    "key": "2024",
+                    "value": "2024"
+                },
+                {
+                    "key": "2025",
+                    "value": "2025"
+                },
+                {
+                    "key": "2026",
+                    "value": "2026"
+                },
+                {
+                    "key": "2027",
+                    "value": "2027"
+                },
+                {
+                    "key": "2028",
+                    "value": "2028"
+                },
+                {
+                    "key": "2029",
+                    "value": "2029"
+                }
+            ]
         }
-    }
+    ]
 }
 
 export function toStr(data: Object): string {
