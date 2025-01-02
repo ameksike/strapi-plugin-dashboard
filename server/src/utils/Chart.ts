@@ -163,7 +163,7 @@ export class ChartService {
     }
 
     getDefaults(data: Vars[]) {
-        return data.reduce((acc, item) => (acc[item.key] = item.defaults) && acc, {});
+        return Array.isArray(data) ? data.reduce((acc, item) => (acc[item.key] = item.defaults) && acc, {}) : {};
     }
 }
 
