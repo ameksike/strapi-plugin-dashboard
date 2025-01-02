@@ -80,23 +80,27 @@ export function ChartView({ data, onEdit, onDel, onView, size }: ChartViewProps)
             )}
 
             {result?.data && (
-                <Box
-                    width="100%"
-                    minHeight="200px"
-                    marginTop={2}
-                    marginBottom={2}
-                    justifyContent="center"
-                    alignItems="center"
-                >
+                <Box style={{
+                    overflowX: 'auto',
+                    overflowY: 'hidden',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '100%',
+                    height: 'auto',
+                    minHeight: '200px',
+                    marginTop: '2px',
+                    marginBottom: '2px'
+                }}>
                     <ComposedChart
                         data={result?.data}
-                        width={size?.width ?? wSize.percernt(90, "width")}
-                        height={size?.height ?? wSize.percernt(70, "height")}
+                        width={wSize.percernt(size?.width || 90, "width")}
+                        height={wSize.percernt(size?.height || 70, "height")}
                         margin={{
                             top: 5,
-                            right: 10,
-                            left: 10,
-                            bottom: 5,
+                            right: 6,
+                            left: 6,
+                            bottom: 5
                         }}
                     >
                         <CartesianGrid strokeDasharray="3 3" stroke="#f5f5f5" />

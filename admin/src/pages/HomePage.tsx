@@ -75,15 +75,18 @@ const HomePage: React.FC = () => {
           )}
 
           {charts.map((chart, index) => (
-            <Grid.Item key={chart.id + "-" + index} col={6} s={12} xs={12} margin={2}>
-              <ChartView data={chart} onEdit={onEdit} onDel={onDel} onView={onShow} size={({ height: 300, width: 600 })}/>
+            <Grid.Item key={chart.id + "-" + index} col={6} s={12} xs={12} padding={4}>
+              <ChartView data={chart} onEdit={onEdit} onDel={onDel} onView={onShow} size={{ height: 30, width: 40 }} />
             </Grid.Item>
           ))}
 
-          <Grid.Item col={4} md={6} s={12} margin={2} >
+          <Grid.Item col={4} md={6} s={12} padding={4} >
             <Box
-              width="100%"
               background="neutral100"
+              style={{
+                width: "100%",
+                marginLeft: "5rem"
+              }}
             >
               <EmptyStateLayout
                 icon={<Illo />}
