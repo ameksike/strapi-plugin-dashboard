@@ -1,8 +1,8 @@
-STP_DASHBOAD is a plugin that allows you to visualize a dashboard in Strapi with multiple charts, including Bar, Line, Area, and more. This plugin enhances the Strapi admin panel by providing a comprehensive and customizable interface for displaying various types of data visualizations. With Ksdasboard, you can easily create and manage dashboards to monitor key metrics and insights directly within your Strapi environment.
+StpDasboard is a plugin that allows you to visualize a dashboard in Strapi with multiple charts, including Bar, Line, Area, and more. This plugin enhances the Strapi admin panel by providing a comprehensive and customizable interface for displaying various types of data visualizations. With Ksdasboard, you can easily create and manage dashboards to monitor key metrics and insights directly within your Strapi environment.
 
 ![screenshot](./docs/screenshot.jpg)
 
-**Key Features of Ksdasboard:**
+**Key Features of StpDasboard:**
 1. Multiple Chart Types:
     - Supports various chart types such as Bar, Line, Area, Pie, and more.
     - Allows you to choose the best visualization for your data.
