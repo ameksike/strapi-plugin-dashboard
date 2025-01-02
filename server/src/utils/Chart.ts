@@ -1,6 +1,6 @@
 import * as fs from 'fs/promises';
 import * as path from 'path';
-import { Chart, FnFilter } from '../../../admin/src/models/Chart';
+import { Chart, FnFilter, Vars } from '../../../admin/src/models/Chart';
 
 // Define the path to the JSON file
 const FILE = '../cfg/charts.json';
@@ -160,6 +160,10 @@ export class ChartService {
             charts = charts.filter(chart => !filterFn(chart));
         }
         await this.write(charts);
+    }
+
+    getDefaults(data: Vars) {
+        return Object.keys(data).reduce((acc, key) => (acc[key] = data[key]?.defaults) && acc, {});
     }
 }
 

@@ -44,7 +44,10 @@ export const ChartModalCtrl = ({ data, open }: CharModalCtrlProps = {}) => {
         query: data?.query || "",
         config: toStr(data || protoChart)
     } : {});
-    const [state, dispatch] = useReducer((state, action) => ({ ...state, ...action }), { config: toStr(data || protoChart), ...extract(data), open });
+    const [state, dispatch] = useReducer((state, action) => (
+        { ...state, ...action }),
+        { config: toStr(data || protoChart), query: protoChart.query, ...extract(data), open }
+    );
     return {
         state,
         dispatch,
