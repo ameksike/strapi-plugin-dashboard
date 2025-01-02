@@ -1,6 +1,6 @@
 import { Box, Typography, Flex, Button, Loader, Alert } from "@strapi/design-system";
-import { Chart } from "../models/Chart";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import { Chart, Axis } from "../models/Chart";
+import { XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ComposedChart, Area, Bar, Line } from 'recharts';
 import { Pencil, Trash, Eye } from "@strapi/icons";
 import { useFetchSrv } from "../service/useFetch";
 import srvChart from "../service/charsrv";
@@ -17,18 +17,35 @@ interface Item {
 
 interface ChartViewProps {
     data: Chart;
+    size?: {
+        width: number;
+        height: number;
+    };
     onEdit?: (value: Chart) => void;
     onDel?: (value: Chart) => void;
     onView?: (value: Chart) => void;
 }
 
-export function ChartView({ data, onEdit, onDel, onView }: ChartViewProps) {
+function ChartItem({ item, index }: { item: Axis, index: number }) {
+    switch (item?.type?.toLowerCase()) {
+        case "bar":
+            return <Bar type="monotone" dataKey={item.key} stroke={item.stroke} fill={item.fill} key={index} barSize={item.barSize ?? 10} />
+
+        case "area":
+            return <Area type="monotone" dataKey={item.key} stroke={item.stroke} fill={item.fill} activeDot={item.active} key={index} />
+
+        default:
+            return <Line type="monotone" dataKey={item.key} stroke={item.stroke} activeDot={item.active} key={index} />
+    }
+}
+
+export function ChartView({ data, onEdit, onDel, onView, size = { width: 600, height: 300 } }: ChartViewProps) {
     const { formatMessage } = useIntl();
     const fetchChartData: () => Promise<{ data: Array<Item> }> | null | undefined = useCallback(() => !data?.id ? null : srvChart.getData(data.id), []);
     const { data: result, error, isLoading } = useFetchSrv<{ data: Array<Item> }>(fetchChartData);
 
     if (isLoading) {
-        return <Loader>{formatMessage({ id: getTranslation('msg.loading')})}</Loader>
+        return <Loader>{formatMessage({ id: getTranslation('msg.loading') })}</Loader>
     }
 
     return (
@@ -52,7 +69,7 @@ export function ChartView({ data, onEdit, onDel, onView }: ChartViewProps) {
 
             {error && (
                 <Alert width="100%" closeLabel="Close" title="Title" variant="danger">
-                    {formatMessage({ id: getTranslation('error.retrieve')})}
+                    {formatMessage({ id: getTranslation('error.retrieve') })}
                 </Alert>
             )}
 
@@ -61,27 +78,32 @@ export function ChartView({ data, onEdit, onDel, onView }: ChartViewProps) {
             )}
 
             {result?.data && (
-                <Box width="100%" marginTop={2} marginBottom={2}>
-                    <LineChart
-                        width={600}
-                        height={300}
+                <Box
+                    width="100%"
+                    minHeight="200px"
+                    marginTop={2}
+                    marginBottom={2}
+                    justifyContent="center"
+                    alignItems="center"
+                >
+                    <ComposedChart
                         data={result?.data}
+                        width={size.width}
+                        height={size.height}
                         margin={{
                             top: 5,
-                            right: 30,
-                            left: 20,
+                            right: 10,
+                            left: 10,
                             bottom: 5,
                         }}
                     >
-                        <CartesianGrid strokeDasharray="3 3" />
+                        <CartesianGrid strokeDasharray="3 3" stroke="#f5f5f5" />
                         {data.xaxis.map(point => (<XAxis dataKey={point.key} key={point.key} />))}
                         <YAxis />
                         <Tooltip />
                         <Legend />
-                        {data.yaxis.map((item, index) => (
-                            <Line type="monotone" dataKey={item.key} stroke={item.stroke} activeDot={item.active} key={index} />
-                        ))}
-                    </LineChart>
+                        {data.yaxis.map((item, index) => ChartItem({ item, index }))}
+                    </ComposedChart>
                 </Box>
             )}
         </Box>

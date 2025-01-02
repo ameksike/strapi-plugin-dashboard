@@ -1,18 +1,25 @@
+export interface Axis {
+    key: string;
+    stroke?: string;
+    fill?: string;
+    active?: any;
+    type?: string;
+    barSize?: number;
+}
+
 export interface Chart {
     id?: string;
     name: string;
     label?: string;
-    type?: string;
     tooltip?: boolean;
     legend?: boolean;
-    xaxis: { key: string }[];
-    yaxis: { key: string; stroke: string; fill: string; active: any }[];
+    xaxis: Axis[];
+    yaxis: Axis[];
     query?: string;
 }
 
 export const protoChart = {
     "name": "order",
-    "type": "line",
     "tooltip": true,
     "legend": true,
     "xaxis": [
@@ -25,6 +32,7 @@ export const protoChart = {
             "key": "name",
             "stroke": "#8884d8",
             "fill": "8884d8",
+            "type": "line",
             "active": { "r": 8 }
         }
     ]
