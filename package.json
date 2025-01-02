@@ -60,11 +60,11 @@
   },
   "strapi": {
     "kind": "plugin",
-    "name": "kschart",
+    "name": "stpdashboard",
     "displayName": "Ksike Dashboard",
     "description": "Plugin for Strapi that enables the visualization of customizable dashboards with multiple chart types, including Bar, Line, and Area, directly within the Strapi admin panel."
   },
-  "name": "kschart",
+  "name": "stpdashboard",
   "description": "Plugin for Strapi that enables the visualization of customizable dashboards with multiple chart types, including Bar, Line, and Area, directly within the Strapi admin panel.",
   "license": "MIT",
   "author": "Antonio <tonykssa@gmail.com>"
