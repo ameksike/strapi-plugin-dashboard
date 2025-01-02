@@ -7,11 +7,15 @@ export interface Axis {
     barSize?: number;
 }
 
-export interface Vars { [key: string]: VarBody };
-export interface VarBody {
-    value: any;
+export interface Vars {
+    key: string;
+    value?: any;
     defaults: any;
-    component: string;
+    component?: string;
+}
+
+export interface Filters {
+    [key: string]: any;
 }
 
 export interface Chart {
@@ -23,7 +27,8 @@ export interface Chart {
     xaxis: Axis[];
     yaxis: Axis[];
     query?: string;
-    vars?: Vars;
+    vars?: Vars[];
+    filters?: Filters
 }
 
 export const protoChart = {

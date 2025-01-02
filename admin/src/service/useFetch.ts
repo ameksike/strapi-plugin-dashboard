@@ -76,19 +76,20 @@ export function useFetch<T>(url: string, options?: RequestInit) {
 /**
  * Custom hook for fetching data from an API.
  *
- * @param {()=>Promise<T>} queryAction - The API endpoint.
+ * @param {(p?: P)=>Promise<T,P>} queryAction - The API endpoint.
  * @returns {object} - { data, error, isLoading, refetch }
  * @example const { data: result, error, isLoading } = useFetchSrv<Chart>(() => !data?.id ? null : charsrv.select(data.id))
  */
-export function useFetchSrv<T>(queryAction: () => Promise<T> | null | undefined) {
+export function useFetchSrv<T, P>(queryAction: (p?: P | null) => Promise<T> | null | undefined, param?: P | null) {
     const [data, setData] = useState<T | null>(null);
     const [error, setError] = useState<Error | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const fetchData = useCallback(async () => {
+
+    const fetchData = useCallback(async (param?: P | null) => {
         setIsLoading(true);
         setError(null);
         try {
-            let result = await queryAction();
+            let result = await queryAction(param);
             if (!result) {
                 throw Error("No data retrieved...");
             }

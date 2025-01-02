@@ -33,19 +33,19 @@ interface ChartViewProps {
     onView?: (value: Chart) => void;
 }
 
-type FnFetch = (params?: Filters) => Promise<{ data: Array<Item> }> | null | undefined;
+type FnFetch = (params?: Filters | null) => Promise<{ data: Array<Item> }> | null | undefined;
 
 export function ChartView({ data, onEdit, onDel, onView, size }: ChartViewProps) {
     const { formatMessage } = useIntl();
-    const fetchChartData: FnFetch = useCallback(() => !data?.id ? null : srvChart.getData(data.id), []);
+    const fetchChartData: FnFetch = useCallback((param = null) => !data?.id ? null : srvChart.getData(data.id, param), []);
+
     const { data: result, error, isLoading, load } = useFetchSrv<{ data: Array<Item> }, Filters>(fetchChartData);
     const wSize = useSize();
 
     //const auth = useAuth(PLUGIN_ID, (state) => state.permissions);
 
     function onApply(state: Filters) {
-        console.log(">>>>>>>>>>>>>>>>> ", state)
-        // load(state);
+        load(state);
     }
 
     if (isLoading) {
@@ -59,13 +59,13 @@ export function ChartView({ data, onEdit, onDel, onView, size }: ChartViewProps)
                     <Typography>{data.label}</Typography>
                     <Flex>
                         {onView && <Box paddingLeft={2}>
-                            <Button variant="tertiary" onClick={() => onView instanceof Function && onView(data)} label="View"  > <Eye /></Button>
+                            <Button variant="tertiary" onClick={() => onView instanceof Function && onView(data)} label="View"><Eye /></Button>
                         </Box>}
                         <Box paddingLeft={2}>
-                            <Button variant="tertiary" onClick={() => onEdit instanceof Function && onEdit(data)} label="Edit" ><Pencil /></Button>
+                            <Button variant="tertiary" onClick={() => onEdit instanceof Function && onEdit(data)} label="Edit"><Pencil /></Button>
                         </Box>
                         <Box paddingLeft={2}>
-                            <Button variant="tertiary" onClick={() => onDel instanceof Function && onDel(data)} label="Delete"  > <Trash /></Button>
+                            <Button variant="tertiary" onClick={() => onDel instanceof Function && onDel(data)} label="Delete"><Trash /></Button>
                         </Box>
                     </Flex>
                 </Flex>

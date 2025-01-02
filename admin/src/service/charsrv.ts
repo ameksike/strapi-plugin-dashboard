@@ -1,4 +1,5 @@
-import { Chart } from '../models/Chart';
+
+import { Chart, Filters } from '../models/Chart';
 import { PLUGIN_ID } from '../pluginId';
 
 export class ChartService {
@@ -8,9 +9,10 @@ export class ChartService {
         this.baseUrl = `/api/${pluginName}/charts`;
     }
 
-    async getData<T>(id: string): Promise<T> {
+    async getData<T>(id: string, params?: Filters | null): Promise<T> {
         try {
-            const response = await fetch(`${this.baseUrl}/${id}/data`);
+            const queryString = new URLSearchParams(params || {}).toString();
+            const response = await fetch(`${this.baseUrl}/${id}/data?${queryString}`);
             if (!response.ok) {
                 throw new Error(`Failed to create chart: ${response.status}`);
             }
