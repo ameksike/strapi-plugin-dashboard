@@ -1,13 +1,13 @@
 import { PLUGIN_ID } from './pluginId';
 import { Initializer } from './components/Initializer';
-import { DashboardIcon, HomeIcon } from './components/PluginIcon';
+import { PluginIcon } from './components/PluginIcon';
 
 export default {
   register(app: any) {
 
     app.addMenuLink({
       to: `plugins/${PLUGIN_ID}`,
-      icon: HomeIcon,
+      icon: PluginIcon,
       intlLabel: {
         id: `${PLUGIN_ID}.plugin.name`,
         defaultMessage: 'Ksike Virtual Home',

@@ -1,8 +1,8 @@
-import { PuzzlePiece  } from '@strapi/icons';
 import { ManyWays } from '@strapi/icons';
 import { ChartBubble } from '@strapi/icons';
+import { ChartPie } from '@strapi/icons';
 
-const PluginIcon = () => <PuzzlePiece />;
+const PluginIcon = () => <ChartPie />;
 const HomeIcon = () => <ManyWays />;
 const DashboardIcon = () => <ChartBubble />;
 

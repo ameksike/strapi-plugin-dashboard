@@ -30,7 +30,7 @@ export function FilterPanel({ data, ctrl, onApply, filters = {} }: FilterPanelPr
                 justifyContent: "flex-end"
             }}
         >
-            {data.vars?.map(item => FilterItem({ item, control, style: { marginRight: "4px" } }))}
+            {Array.isArray(data.vars) && data.vars.map(item => FilterItem({ item, control, style: { marginRight: "4px" } }))}
             <Box paddingLeft={2}><Button variant="tertiary" onClick={() => onApply instanceof Function && onApply(control.state)} label={formatMessage({ id: getTranslation('page.show.btn.apply') })}> <Check /> </Button></Box>
         </Flex >
     );
@@ -42,7 +42,7 @@ export interface FilterCtrl {
 }
 
 export const FilterPanelCtrl = (data: Chart, filters: Filters = {}) => {
-    const extract = (dta?: Vars[]) => dta?.reduce((acc, item) => (acc[item.key as string] = item.defaults) && acc, {} as { [key: string]: any }) || {};
+    const extract = (dta?: Vars[]) => Array.isArray(dta) ? dta.reduce((acc, item) => (acc[item.key as string] = item.defaults) && acc, {} as { [key: string]: any }) : {};
     const [state, dispatch] = useReducer((state, action) => (
         { ...state, ...action }),
         { ...extract(data.vars), ...filters }
