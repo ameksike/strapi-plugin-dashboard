@@ -33,7 +33,8 @@ export class ChartService {
             if (!response.ok) {
                 throw new Error(`Failed to create chart: ${response.status}`);
             }
-            return response.json();
+            const res = await response.json();
+            return res.data;
         } catch (error) {
             console.error('Error creating chart:', error);
             throw error;
