@@ -6,6 +6,7 @@
     "ksvirt.page.btn.back": "Back to Dashboard",
     "ksvirt.page.show.title": "Show Page",
     "ksvirt.page.show.subtitle": "Get more details about this chart",
+    "ksvirt.page.show.btn.apply": "Applay",
     "ksvirt.error.retrieve": "There is no data to retrieve.",
     "ksvirt.msg.loading": "Loading content...",
     "ksvirt.modal.add": "Add a new Chart",
