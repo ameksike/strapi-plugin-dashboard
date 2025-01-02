@@ -2,16 +2,31 @@ import { useCallback, useEffect, useState } from "react";
 import { Chart } from "../models/Chart";
 import srvChart from './charsrv';
 
-export const useCharts = () => {
+export const useCharts = ({ all = true, id = "" }: { all?: boolean, id?: string }) => {
+    const [chart, setChart] = useState<Chart | null>(null);
     const [charts, setCharts] = useState<Chart[]>([]);
     const [error, setError] = useState<Error | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
-    const fetchCharts = useCallback(async () => {
+    const load = useCallback(async () => {
         try {
             setIsLoading(true);
             const data = await srvChart.getAll();
             setCharts(data);
+        } catch (err: any) {
+            if (err.name !== "AbortError") {
+                setError(err);
+            }
+        } finally {
+            setIsLoading(false);
+        }
+    }, []);
+
+    const find = useCallback(async (id: string) => {
+        try {
+            setIsLoading(true);
+            const data = await srvChart.select(id);
+            setChart(data);
         } catch (err: any) {
             if (err.name !== "AbortError") {
                 setError(err);
@@ -34,11 +49,11 @@ export const useCharts = () => {
         }
     };
 
-    const update = async (id: string, updatedChart: Partial<Chart>) => {
+    const update = async (id: string, data: Partial<Chart>) => {
         try {
-            await srvChart.update(id, updatedChart);
+            await srvChart.update(id, data);
             setCharts((prevCharts) =>
-                prevCharts.map((chart) => (chart.id === id ? { ...chart, ...updatedChart } : chart))
+                prevCharts.map((chart) => (chart.id === id ? { ...chart, ...data } : chart))
             );
         } catch (err: any) {
             if (err.name !== "AbortError") {
@@ -63,8 +78,9 @@ export const useCharts = () => {
     };
 
     useEffect(() => {
-        fetchCharts();
-    }, [fetchCharts]);
+        all && load();
+        id && find(id);
+    }, [load, all, id]);
 
-    return { isLoading, error, charts, create, update, remove, load: fetchCharts };
+    return { isLoading, error, chart, charts, create, update, remove, load, find };
 };
