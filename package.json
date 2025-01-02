@@ -1,6 +1,14 @@
 {
-  "version": "1.0.0",
-  "keywords": ["strapi", "plugin", "chart", "dashboard", "area", "bar", "line"],
+  "version": "1.0.1",
+  "keywords": [
+    "strapi",
+    "plugin",
+    "chart",
+    "dashboard",
+    "area",
+    "bar",
+    "line"
+  ],
   "type": "commonjs",
   "exports": {
     "./package.json": "./package.json",
@@ -20,7 +28,8 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "docs"
   ],
   "scripts": {
     "build": "strapi-plugin build",
@@ -60,12 +69,19 @@
   },
   "strapi": {
     "kind": "plugin",
-    "name": "stpdashboard",
+    "name": "strapi-dashboard",
     "displayName": "Ksike Dashboard",
     "description": "Plugin for Strapi that enables the visualization of customizable dashboards with multiple chart types, including Bar, Line, and Area, directly within the Strapi admin panel."
   },
-  "name": "stpdashboard",
+  "repository": {
+    "type": "git",
+    "url": "git+git@github.com:ameksike/strapi-plugin-dashboard.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ameksike/strapi-plugin-dashboard/issues"
+  },
+  "name": "strapi-dashboard",
   "description": "Plugin for Strapi that enables the visualization of customizable dashboards with multiple chart types, including Bar, Line, and Area, directly within the Strapi admin panel.",
   "license": "MIT",
-  "author": "Antonio <tonykssa@gmail.com>"
+  "author": "Antonio Membrides Espinosa <tonykssa@gmail.com>"
 }
