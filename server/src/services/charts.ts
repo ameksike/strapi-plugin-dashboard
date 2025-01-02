@@ -9,11 +9,14 @@ function getFilter(id: string): FnFilter {
 
 export default ({ strapi }: { strapi: any }) => ({
   getPath() {
-    return path.resolve(strapi.dirs.app?.root, 'dist/cfg/charts.json');
+    return path.resolve(strapi.dirs.app?.root, 'config/charts.json');
   },
 
   sanitizeSQL(sql?: string): string | null {
     // Trim leading and trailing whitespaces
+    if (!sql) {
+      return null;
+    }
     const trimmedQuery = sql.trim().replace(/\n/g, ' ').replace(/ +/g, " ");
     // Define forbidden keywords that indicate non-select operations
     const forbiddenKeywords = /\b(UPDATE|DELETE|CREATE|TRUNCATE|DROP|INSERT|ALTER|EXEC|MERGE|CALL|GRANT|REVOKE|SET)\b/i;
@@ -50,12 +53,12 @@ export default ({ strapi }: { strapi: any }) => ({
   },
 
   async delete(id: string): Promise<Chart[]> {
-    return await this.getSrv().remove(id);
+    return await this.getSrv().remove((item) => item.id === id);
   },
 
   async getData(id: string): Promise<any[]> {
     const chart = await this.getSrv().findOne(getFilter(id));
-    const query = this.sanitizeSQL(chart.query);
+    const query = chart?.query && this.sanitizeSQL(chart?.query);
     let res = null;
     if (query) {
       res = await strapi.db.connection.raw(query);
