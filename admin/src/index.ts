@@ -10,27 +10,12 @@ export default {
       icon: HomeIcon,
       intlLabel: {
         id: `${PLUGIN_ID}.plugin.name`,
-        defaultMessage:'Ksike Virtual Home',
+        defaultMessage: 'Ksike Virtual Home',
       },
       Component: async () => {
         const { App } = await import('./pages/App');
-
         return App;
       },
-    });
-
-    app.addMenuLink({
-      to: `plugins/${PLUGIN_ID}/dashboard`,
-      icon: DashboardIcon,
-      intlLabel: {
-        id: `${PLUGIN_ID}.dashboard.label`,
-        defaultMessage: 'Ksike Virtual Dashboard',
-      },
-      Component: async () => {
-        const component = await import('./pages/Dashboard');
-        return component.default;
-      },
-      permissions: [],
     });
 
     app.registerPlugin({
