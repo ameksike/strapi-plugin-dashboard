@@ -3,7 +3,7 @@ import { Chart, FnFilter } from '../../../admin/src/models/Chart';
 import srvChart from '../utils/Chart';
 
 const {
-  PLUGIN_KSDASHBOARD = ".tmp/charts.json",
+  PLUGIN_KSCHART = "config/charts.json",
 } = process.env;
 
 function getFilter(id: string): FnFilter {
@@ -12,7 +12,7 @@ function getFilter(id: string): FnFilter {
 
 export default ({ strapi }: { strapi: any }) => ({
   getPath() {
-    return path.resolve(strapi.dirs.app?.root, PLUGIN_KSDASHBOARD);
+    return path.resolve(strapi.dirs.app?.root, PLUGIN_KSCHART);
   },
 
   sanitizeSQL(sql?: string): string | null {

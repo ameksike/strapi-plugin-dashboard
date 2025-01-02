@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "keywords": [],
+  "keywords": ["strapi", "plugin", "chart", "dashboard", "area", "bar", "line"],
   "type": "commonjs",
   "exports": {
     "./package.json": "./package.json",
@@ -60,11 +60,11 @@
   },
   "strapi": {
     "kind": "plugin",
-    "name": "ksdasboard",
+    "name": "kschart",
     "displayName": "Ksike Dashboard",
     "description": "Plugin for Strapi that enables the visualization of customizable dashboards with multiple chart types, including Bar, Line, and Area, directly within the Strapi admin panel."
   },
-  "name": "ksdasboard",
+  "name": "kschart",
   "description": "Plugin for Strapi that enables the visualization of customizable dashboards with multiple chart types, including Bar, Line, and Area, directly within the Strapi admin panel.",
   "license": "MIT",
   "author": "Antonio <tonykssa@gmail.com>"
