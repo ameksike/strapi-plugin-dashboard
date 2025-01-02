@@ -61,7 +61,8 @@ export class ChartService {
             if (!response.ok) {
                 throw new Error(`Failed to fetch chart with id ${id}: ${response.status}`);
             }
-            return response.json();
+            const res = await response.json();
+            return res.data;
         } catch (error) {
             console.error(`Error fetching chart with id ${id}:`, error);
             throw error;
