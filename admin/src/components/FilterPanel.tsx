@@ -8,13 +8,14 @@ import { useIntl } from "react-intl";
 import { getTranslation } from "../utils/getTranslation";
 
 interface FilterPanelProp {
+    filters?: Filters;
     data: Chart;
     ctrl?: FilterCtrl;
     onApply?: (state: Filters) => void;
 }
 
-export function FilterPanel({ data, ctrl, onApply }: FilterPanelProp) {
-    const control = ctrl || FilterPanelCtrl(data);
+export function FilterPanel({ data, ctrl, onApply, filters = {} }: FilterPanelProp) {
+    const control = ctrl || FilterPanelCtrl(data, filters);
     const { formatMessage } = useIntl();
 
     return (
@@ -40,16 +41,11 @@ export interface FilterCtrl {
     dispatch: React.Dispatch<Filters>;
 }
 
-export const FilterPanelCtrl = (data: Chart) => {
-    const extract = (dta?: Vars[]) => {
-        return dta?.reduce((acc, item) => (acc[item.key as string] = item.defaults) && acc, {} as { [key: string]: any }) || {};
-    }
+export const FilterPanelCtrl = (data: Chart, filters: Filters = {}) => {
+    const extract = (dta?: Vars[]) => dta?.reduce((acc, item) => (acc[item.key as string] = item.defaults) && acc, {} as { [key: string]: any }) || {};
     const [state, dispatch] = useReducer((state, action) => (
         { ...state, ...action }),
-        { ...extract(data.vars) }
+        { ...extract(data.vars), ...filters }
     );
-    return {
-        state,
-        dispatch
-    };
+    return { state, dispatch };
 }

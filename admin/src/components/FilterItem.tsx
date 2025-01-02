@@ -9,7 +9,7 @@ export function FilterItem({ item, control, style }: { item: Vars, control: Filt
         default:
             return <SingleSelect
                 key={item.key}
-                onClear={() => control.dispatch({ [item.key]: null })}
+                onClear={() => control.dispatch({ [item.key]: item.defaults })}
                 value={control.state[item.key]}
                 onChange={(value: string) => control.dispatch({ [item.key]: value })}
                 style={style}

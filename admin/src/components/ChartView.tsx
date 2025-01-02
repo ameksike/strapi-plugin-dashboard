@@ -39,7 +39,7 @@ export function ChartView({ data, onEdit, onDel, onView, size }: ChartViewProps)
     const { formatMessage } = useIntl();
     const fetchChartData: FnFetch = useCallback((param = null) => !data?.id ? null : srvChart.getData(data.id, param), []);
 
-    const { data: result, error, isLoading, load } = useFetchSrv<{ data: Array<Item> }, Filters>(fetchChartData);
+    const { data: result, error, isLoading, load } = useFetchSrv<{ data: Array<Item>, filters?: Filters }, Filters>(fetchChartData);
     const wSize = useSize();
 
     //const auth = useAuth(PLUGIN_ID, (state) => state.permissions);
@@ -115,7 +115,7 @@ export function ChartView({ data, onEdit, onDel, onView, size }: ChartViewProps)
                 </Box>
             )}
 
-            <FilterPanel data={data} onApply={onApply} />
+            <FilterPanel data={data} onApply={onApply} filters={result?.filters} />
         </Box>
     )
 }
