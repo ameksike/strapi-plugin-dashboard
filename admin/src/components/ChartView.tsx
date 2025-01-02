@@ -1,10 +1,11 @@
 import { Box, Typography, Flex, Button, Loader, Alert } from "@strapi/design-system";
 import { Chart } from "../models/Chart";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
-import { Pencil, Trash } from "@strapi/icons";
+import { Pencil, Trash, Eye } from "@strapi/icons";
 import { useFetchSrv } from "../service/useFetch";
 import srvChart from "../service/charsrv";
 import { useCallback } from "react";
+import { getTranslation } from "../utils/getTranslation";
 
 interface Item {
     name: string;
@@ -17,9 +18,10 @@ interface ChartViewProps {
     data: Chart;
     onEdit?: (value: Chart) => void;
     onDel?: (value: Chart) => void;
+    onView?: (value: Chart) => void;
 }
 
-export function ChartView({ data, onEdit, onDel }: ChartViewProps) {
+export function ChartView({ data, onEdit, onDel, onView }: ChartViewProps) {
     const fetchChartData: () => Promise<{ data: Array<Item> }> | null | undefined = useCallback(() => !data?.id ? null : srvChart.getData(data.id), []);
 
     const { data: result, error, isLoading } = useFetchSrv<{ data: Array<Item> }>(fetchChartData)
@@ -30,9 +32,14 @@ export function ChartView({ data, onEdit, onDel }: ChartViewProps) {
                 <Flex justifyContent="space-between" alignItems="center">
                     <Typography>{data.label}</Typography>
                     <Flex>
-                        <Button variant="tertiary"  onClick={() => onEdit instanceof Function && onEdit(data)} label="Edit" ><Pencil /></Button>
                         <Box paddingLeft={2}>
-                            <Button variant="tertiary"  onClick={() => onDel instanceof Function && onDel(data)} label="Delete"  > <Trash /></Button>
+                            <Button variant="tertiary" onClick={() => onView instanceof Function && onView(data)} label="View"  > <Eye /></Button>
+                        </Box>
+                        <Box paddingLeft={2}>
+                            <Button variant="tertiary" onClick={() => onEdit instanceof Function && onEdit(data)} label="Edit" ><Pencil /></Button>
+                        </Box>
+                        <Box paddingLeft={2}>
+                            <Button variant="tertiary" onClick={() => onDel instanceof Function && onDel(data)} label="Delete"  > <Trash /></Button>
                         </Box>
                     </Flex>
                 </Flex>
@@ -40,12 +47,12 @@ export function ChartView({ data, onEdit, onDel }: ChartViewProps) {
 
             {error && (
                 <Alert width="100%" closeLabel="Close" title="Title" variant="danger">
-                    There is no data to retrieve.
+                    {getTranslation('error.retrieve')}
                 </Alert>
             )}
 
             {!result?.data && !error && (
-                <Loader >Loading content...</Loader>
+                <Loader >{getTranslation('msg.loading')}</Loader>
             )}
 
             {result?.data && (

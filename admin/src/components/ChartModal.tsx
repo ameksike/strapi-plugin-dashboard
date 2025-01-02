@@ -2,6 +2,8 @@ import { TextInput, Textarea, Button, Modal, JSONInput, Field } from "@strapi/de
 import { Plus } from "@strapi/icons";
 import { FormEvent, useState, useReducer } from "react";
 import { Chart, protoChart, toStr } from "../models/Chart";
+import { getTranslation } from "../utils/getTranslation";
+import { useIntl } from "react-intl";
 
 interface CharModalProps {
     onConfirm?: (value: Chart) => void;
@@ -53,6 +55,7 @@ export const ChartModalCtrl = ({ data, open }: CharModalCtrlProps = {}) => {
 }
 
 export function ChartModal({ onConfirm, data, open, btnOpen, ctrl }: CharModalProps) {
+    const { formatMessage } = useIntl();
     const [error, setError] = useState("");
     const [isBtnOpen] = useState(btnOpen ?? false);
     const { state, dispatch } = ctrl || ChartModalCtrl({ data, open });
@@ -61,7 +64,7 @@ export function ChartModal({ onConfirm, data, open, btnOpen, ctrl }: CharModalPr
         try {
             const local = state?.config && JSON.parse(state.config);
             if (typeof local !== 'object' || local === null) {
-                throw new Error('The value must be a valid JSON object.');
+                throw new Error(formatMessage({ id: getTranslation('modal.config.error') }));
             }
             setError("");
             return local as Chart;
@@ -98,19 +101,19 @@ export function ChartModal({ onConfirm, data, open, btnOpen, ctrl }: CharModalPr
     return (
         <Modal.Root open={state.open} onOpenChange={(value: boolean) => dispatch({ open: value })}>
             {isBtnOpen && <Modal.Trigger>
-                <Button variant="secondary" startIcon={<Plus />} onClick={() => dispatch({ open: true })} >Create a chart</Button>
+                <Button variant="secondary" startIcon={<Plus />} onClick={() => dispatch({ open: true })} >{formatMessage({ id: getTranslation('modal.btn.create') })}</Button>
             </Modal.Trigger>}
             <Modal.Content>
                 <Modal.Header>
-                    <Modal.Title>Add a new Chart</Modal.Title>
+                    <Modal.Title>{formatMessage({ id: getTranslation('modal.add') })}</Modal.Title>
                 </Modal.Header>
                 <form onSubmit={handleConfirm} >
                     <Modal.Body style={{ maxHeight: '70vh', overflowY: 'auto' }}>
 
                         <Field.Root name="label" marginBottom={4} required>
-                            <Field.Label>Label</Field.Label>
+                            <Field.Label>{formatMessage({ id: getTranslation('modal.label.title') })} </Field.Label>
                             <TextInput
-                                placeholder="How do you want to name your chart?"
+                                placeholder={formatMessage({ id: getTranslation('modal.label.placeholder') })}
                                 label="Label"
                                 name="text"
                                 hint="Max 40 characters"
@@ -121,7 +124,7 @@ export function ChartModal({ onConfirm, data, open, btnOpen, ctrl }: CharModalPr
                         </Field.Root>
 
                         <Field.Root id="config" marginBottom={4} required>
-                            <Field.Label>Chart Config</Field.Label>
+                            <Field.Label>{formatMessage({ id: getTranslation('modal.config.title') })}</Field.Label>
                             <JSONInput
                                 value={state.config}
                                 aria-label="JSON"
@@ -133,9 +136,9 @@ export function ChartModal({ onConfirm, data, open, btnOpen, ctrl }: CharModalPr
                         </Field.Root>
 
                         <Field.Root name="query" marginBottom={4} required>
-                            <Field.Label>Query</Field.Label>
+                            <Field.Label>{formatMessage({ id: getTranslation('modal.query.title') })}</Field.Label>
                             <Textarea
-                                placeholder="How do you want to render in your chart?"
+                                placeholder={formatMessage({ id: getTranslation('modal.query.placeholder') })}
                                 name="text"
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => dispatch({ query: e.target.value })}
                                 value={state.query}
@@ -145,9 +148,9 @@ export function ChartModal({ onConfirm, data, open, btnOpen, ctrl }: CharModalPr
 
                     <Modal.Footer>
                         <Modal.Close >
-                            <Button variant="tertiary" >Cancel</Button>
+                            <Button variant="tertiary" >{formatMessage({ id: getTranslation('modal.btn.cancel') })}</Button>
                         </Modal.Close>
-                        <Button >Confirm</Button>
+                        <Button >{formatMessage({ id: getTranslation('modal.btn.confirm') })}</Button>
                     </Modal.Footer>
                 </form>
             </Modal.Content>

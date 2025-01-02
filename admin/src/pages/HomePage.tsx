@@ -1,4 +1,4 @@
-import { Main, Grid, EmptyStateLayout, Box, Loader, Typography } from '@strapi/design-system';
+import { Main, Grid, EmptyStateLayout, Box, Loader, Typography, Alert } from '@strapi/design-system';
 import styled from 'styled-components';
 import { useIntl } from 'react-intl';
 
@@ -11,6 +11,10 @@ import { Chart } from '../models/Chart';
 import { useCallback, useState } from 'react';
 import { Button } from '@strapi/design-system';
 import { Plus } from '@strapi/icons';
+import { PLUGIN_ID } from '../pluginId';
+
+import { LinkButton } from '@strapi/design-system';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 const StyledBox = styled(Box)`
   border-radius: ${({ theme }) => theme.borderRadius};
@@ -19,9 +23,14 @@ const StyledBox = styled(Box)`
 `;
 
 const HomePage: React.FC = () => {
+  const navigate = useNavigate();
   const { formatMessage } = useIntl();
-  const { isLoading, error, charts, create, update, remove } = useCharts();
   const ctlChartModal = ChartModalCtrl();
+  const { isLoading, error, charts, create, update, remove } = useCharts({ all: true });
+
+  const onShow = (obj: Chart) => {
+    navigate(`/admin/plugins/${PLUGIN_ID}/${obj.id}`);
+  };
 
   function onConfirm(obj: Chart) {
     if (obj?.id) {
@@ -43,27 +52,41 @@ const HomePage: React.FC = () => {
   }, []);
 
   if (isLoading) {
-    return <Loader>Loading content...</Loader>
+    return <Loader>{formatMessage({ id: getTranslation('msg.loading') })}</Loader>
   }
 
   return (
     <Main>
       <ChartModal onConfirm={onConfirm} ctrl={ctlChartModal} />
 
+      <LinkButton as={NavLink} to={`/admin/plugins/ksvirt/1735773224413`}>
+        Mi Enlace
+      </LinkButton>
+
       <Box>
         <StyledBox padding={3} >
-          <Typography variant="beta">Welcome to {formatMessage({ id: getTranslation('plugin.name') })}</Typography>
+          <Typography variant="beta">{formatMessage({ id: getTranslation('home.title') })}</Typography>
         </StyledBox >
         <Box>
-          <Typography textColor="neutral600">This is a custom dashboard with a static value</Typography>
+          <Typography textColor="neutral600">{formatMessage({ id: getTranslation('home.subtitle') })}</Typography>
         </Box>
       </Box>
 
       <Box>
         <Grid.Root padding={8} >
+          {error && (
+            <Alert width="100%" closeLabel="Close" title="Title" variant="danger">
+              {getTranslation('error.retrieve')}
+            </Alert>
+          )}
+
+          {!charts?.length && !error && (
+            <Loader>{formatMessage({ id: getTranslation('msg.loading') })}</Loader>
+          )}
+
           {charts.map((chart, index) => (
             <Grid.Item key={chart.id + "-" + index} col={6} s={12} xs={12} margin={2}>
-              <ChartView data={chart} onEdit={onEdit} onDel={onDel} />
+              <ChartView data={chart} onEdit={onEdit} onDel={onDel} onView={onShow} />
             </Grid.Item>
           ))}
 
@@ -72,7 +95,7 @@ const HomePage: React.FC = () => {
               <EmptyStateLayout
                 icon={<Illo />}
                 content={(
-                  <Button variant="tertiary" startIcon={<Plus />} onClick={() => ctlChartModal.open()}>Create a new Chart</Button>
+                  <Button variant="tertiary" startIcon={<Plus />} onClick={() => ctlChartModal.open()}>{formatMessage({ id: getTranslation('home.btn.create') })}</Button>
                 )}
               />
             </Box>
