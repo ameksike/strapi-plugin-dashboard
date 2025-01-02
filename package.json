@@ -1,5 +1,5 @@
 {
-  "version": "0.0.0",
+  "version": "1.0.0",
   "keywords": [],
   "type": "commonjs",
   "exports": {
@@ -60,12 +60,12 @@
   },
   "strapi": {
     "kind": "plugin",
-    "name": "ksvirt",
-    "displayName": "Ksike Virtual Data ",
-    "description": "Show virtual data "
+    "name": "ksdasboard",
+    "displayName": "Ksike Dashboard",
+    "description": "Plugin for Strapi that enables the visualization of customizable dashboards with multiple chart types, including Bar, Line, and Area, directly within the Strapi admin panel."
   },
-  "name": "ksvirt",
-  "description": "Show virtual data ",
+  "name": "ksdasboard",
+  "description": "Plugin for Strapi that enables the visualization of customizable dashboards with multiple chart types, including Bar, Line, and Area, directly within the Strapi admin panel.",
   "license": "MIT",
-  "author": "Antonio  <tonykssa@gmail.com>"
+  "author": "Antonio <tonykssa@gmail.com>"
 }
