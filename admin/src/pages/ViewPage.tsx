@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { useIntl } from 'react-intl';
-import { NavLink, useParams } from 'react-router-dom';
+import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { Box, Typography, Main, Loader, Alert, LinkButton } from '@strapi/design-system';
 import { PLUGIN_ID } from '../pluginId';
 import { Chart } from '../models/Chart';
@@ -12,6 +12,7 @@ import { Header } from '../components/Header';
 import { ArrowLeft } from '@strapi/icons';
 
 const ViewPage: React.FC = () => {
+    const navigate = useNavigate();
     const { id } = useParams();
     const ctlChartModal = ChartModalCtrl();
     const { formatMessage } = useIntl();
@@ -20,20 +21,18 @@ const ViewPage: React.FC = () => {
     function onConfirm(obj: Chart) {
         if (obj?.id) {
             update(obj?.id!, obj);
-            console.log("onConfirm:update", obj)
         } else {
             create(obj);
-            console.log("onConfirm:create", obj)
         }
     }
 
     const onEdit = async (obj: Chart) => {
-        console.log("onEdit", obj);
         ctlChartModal.open(obj);
     };
 
     const onDel = useCallback(async (obj: Chart) => {
         obj?.id && remove(obj.id);
+        navigate(`/plugins/${PLUGIN_ID}`);
     }, []);
 
     if (isLoading) {

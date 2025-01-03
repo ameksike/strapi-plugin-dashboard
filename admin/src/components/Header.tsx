@@ -20,7 +20,7 @@ export function Header({ title = 'home.title', subtitle = 'home.subtitle' }: { t
             <StyledBox padding={3} >
                 <Typography variant="beta">{formatMessage({ id: getTranslation(title) })}</Typography>
             </StyledBox >
-            <Box marginLeft={3} margiTop={-3}>
+            <Box style={{ marginLeft: "11px" }}>
                 <Typography textColor="neutral600">{formatMessage({ id: getTranslation(subtitle) })}</Typography>
             </Box>
         </Box>
