@@ -1,3 +1,22 @@
 {
-    "ksvirt.plugin.name": "KS Virt Tablero"
+    "strapi-plugin-dashboard.plugin.name": "KS Virt Dashboard",
+    "strapi-plugin-dashboard.home.title": "Bienvenido al Tablero Virtual de Ksike",
+    "strapi-plugin-dashboard.home.subtitle": "Este es un tablero personalizado con un valor estático",
+    "strapi-plugin-dashboard.home.btn.create": "Crear un nuevo Gráfico",
+    "strapi-plugin-dashboard.page.btn.back": "Volver al Tablero",
+    "strapi-plugin-dashboard.page.show.title": "Mostrar Página",
+    "strapi-plugin-dashboard.page.show.subtitle": "Obtener más detalles sobre este gráfico",
+    "strapi-plugin-dashboard.page.show.btn.apply": "Aplicar",
+    "strapi-plugin-dashboard.error.retrieve": "No hay datos para recuperar.",
+    "strapi-plugin-dashboard.msg.loading": "Cargando contenido...",
+    "strapi-plugin-dashboard.modal.add": "Agregar un nuevo Gráfico",
+    "strapi-plugin-dashboard.modal.btn.confirm": "Confirmar",
+    "strapi-plugin-dashboard.modal.btn.create": "Crear un nuevo Gráfico",
+    "strapi-plugin-dashboard.modal.btn.cancel": "Cancelar",
+    "strapi-plugin-dashboard.modal.label.title": "Etiqueta",
+    "strapi-plugin-dashboard.modal.label.placeholder": "¿Cómo quieres nombrar tu gráfico?",
+    "strapi-plugin-dashboard.modal.config.title": "Configuración del Gráfico",
+    "strapi-plugin-dashboard.modal.config.error": "El valor debe ser un objeto JSON válido.",
+    "strapi-plugin-dashboard.modal.query.title": "Consulta",
+    "strapi-plugin-dashboard.modal.query.placeholder": "¿Qué quieres renderizar en tu gráfico?"
 }
