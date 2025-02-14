@@ -3,7 +3,6 @@ export default [
     {
         method: 'GET',
         path: '/',
-        // name of the controller file & the method.
         auth: false,
         handler: 'controller.index',
         config: {
