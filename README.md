@@ -23,7 +23,28 @@ StpDasboard is a plugin that allows you to visualize a dashboard in Strapi with 
     - Seamlessly integrates with Strapi's admin panel.
     Utilizes Strapi's content management capabilities to fetch and display data.
 
-### Multi-Data Charts and Graphical Interface in StpDasboard
+## Install & Configure
+To install and configure the StpDasboard plugin for Strapi, follow these steps:
+1. Open your terminal and navigate to your Strapi project directory. 
+2. Run the following command to install the StpDasboard plugin:
+    ```shell
+    npm i strapi-plugin-dashboard
+    ```
+3. Update the Plugin Configuration File:
+    - Navigate to the `config\plugins.ts` file in your Strapi project.
+    - Add the following code to configure the StpDasboard plugin:
+        ```ts
+        const { PLUGIN_STPDASHBOAD = false } = process.env;
+
+        const plugins = {};
+
+        if (PLUGIN_STPDASHBOAD) {
+            plugins["strapi-plugin-dashboard"] = { enabled: true };
+        }
+        export default () => (plugins);
+        ```
+
+## How It Works
 One of the most powerful features of StpDasboard is its ability to represent multiple data points in a single chart using different visualization types such as Lines, Areas, Bars, and more. This flexibility allows users to create rich, informative dashboards that can display complex datasets in an intuitive and visually appealing way. Additionally, the plugin provides a user-friendly graphical interface for editing chart configurations, including the JSON structure, SQL queries, and chart titles. Let’s dive into how this works.
 
 ![chart](./docs/chart.jpg)
@@ -47,8 +68,7 @@ StpDasboard provides an intuitive graphical interface within the Strapi admin pa
 
 5. **Deleting Charts**: If a chart is no longer needed, users can easily delete it from the dashboard. A confirmation dialog ensures that accidental deletions are avoided.
 
-
-## How It Works
+## Configuration
 StpDasboard uses a JSON configuration file (`config/charts.json`) to define the charts and dashboards. This file allows you to specify the chart types, data sources, and other customization options. Below is an example of how you can configure your charts using this file:
 
 ![screenshot-adding3](./docs/screenshot-adding3.jpg)
