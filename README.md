@@ -1,5 +1,7 @@
 StpDasboard is a plugin that allows you to visualize a dashboard in Strapi with multiple charts, including Bar, Line, Area, and more. This plugin enhances the Strapi admin panel by providing a comprehensive and customizable interface for displaying various types of data visualizations. With Ksdasboard, you can easily create and manage dashboards to monitor key metrics and insights directly within your Strapi environment.
 
+🎉 Supports Strapi version 5 🎉
+
 ![screenshot](./docs/screenshot.jpg)
 
 **Key Features of StpDasboard:**
@@ -43,6 +45,18 @@ To install and configure the StpDasboard plugin for Strapi, follow these steps:
         }
         export default () => (plugins);
         ```
+Explanation:
+- The `PLUGIN_STPDASHBOAD` environment variable is used to determine whether the virtval plugin should be enabled. If this variable is set to true, the plugin will be enabled.
+- The plugins object is used to configure Strapi plugins.
+- If `PLUGIN_STPDASHBOAD` is true, the virtval plugin is added to the plugins object with the enabled property set to true.
+- To enable the virtval plugin, you need to set the `PLUGIN_STPDASHBOAD` environment variable to true. This can be done in your `.env` file or directly in your environment.
+    ```
+    PLUGIN_STPDASHBOAD=true
+    ```
+- Once the environment variable is set and the server is restarted, the virtval plugin will be enabled and ready to use.
+
+By following these steps, you can successfully install and configure the virtval plugin in your Strapi project, allowing you to take advantage of its features for rendering and managing values dynamically.
+
 
 ## How It Works
 One of the most powerful features of StpDasboard is its ability to represent multiple data points in a single chart using different visualization types such as Lines, Areas, Bars, and more. This flexibility allows users to create rich, informative dashboards that can display complex datasets in an intuitive and visually appealing way. Additionally, the plugin provides a user-friendly graphical interface for editing chart configurations, including the JSON structure, SQL queries, and chart titles. Let’s dive into how this works.
@@ -376,6 +390,8 @@ In this example:
 
 With the generalized JSON Schema and examples provided, you can now better understand how to configure and use StpDasboard for your Strapi projects. Whether you need a simple chart or a complex dashboard with advanced queries, StpDasboard offers the flexibility and power to meet your data visualization needs. Start building your dynamic dashboards today!
 
+## Similar Plugin
+- [VirtVal Plugin](https://www.npmjs.com/package/virtval): Strapi plugin to add a field with a virtual or external value to an existing Content-Type, [find it at Strapi Market](https://market.strapi.io/plugins/virtval).
 
 ## Conclusion
 
